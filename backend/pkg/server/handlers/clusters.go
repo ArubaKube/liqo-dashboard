@@ -22,7 +22,7 @@ func (s Server) GetV1Clusters(c *gin.Context) {
 }
 
 // GetV1ClustersId implements the `GET /v1/clusters/:id` route, returning the cluster with the given clusterID.
-func (s Server) GetV1ClustersId(c *gin.Context, clusterID string) { //nolint:revive,stylecheck // function name is generated
+func (s Server) GetV1ClustersId(c *gin.Context, clusterID string) { //nolint:revive // function name is generated
 	foreignCluster, err := getters.GetForeignClusterByID(c, s.oClient, clusterID)
 	switch {
 	case k8serrors.IsNotFound(err):
@@ -36,7 +36,7 @@ func (s Server) GetV1ClustersId(c *gin.Context, clusterID string) { //nolint:rev
 }
 
 // GetV1ClustersIdNodes implements the `GET /v1/clusters/:id/node` route, returning all the virtual nodes for a cluster.
-func (s Server) GetV1ClustersIdNodes(c *gin.Context, clusterID string) { //nolint:revive,stylecheck // function name is generated
+func (s Server) GetV1ClustersIdNodes(c *gin.Context, clusterID string) { //nolint:revive // function name is generated
 	nodes, err := getters.GetVirtualNodesByClusterID(c, s.oClient, clusterID)
 	switch {
 	case k8serrors.IsNotFound(err):

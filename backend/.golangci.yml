@@ -1,0 +1,119 @@
+version: "2"
+linters:
+  default: none
+  enable:
+    - asciicheck
+    - bodyclose
+    - copyloopvar
+    - dogsled
+    - dupl
+    - errcheck
+    - errorlint
+    - exhaustive
+    - goconst
+    - gocritic
+    - gocyclo
+    - godot
+    - goheader
+    - gomodguard
+    - goprintffuncname
+    - gosec
+    - govet
+    - ineffassign
+    - lll
+    - misspell
+    - nakedret
+    - noctx
+    - nolintlint
+    - revive
+    - rowserrcheck
+    - staticcheck
+    - unconvert
+    - unparam
+    - unused
+    - whitespace
+  settings:
+    dupl:
+      threshold: 300
+    exhaustive:
+      default-signifies-exhaustive: true
+    goconst:
+      min-len: 2
+      min-occurrences: 2
+    gocritic:
+      disabled-checks:
+        - sloppyReassign
+      enabled-tags:
+        - diagnostic
+        - experimental
+        - opinionated
+        - performance
+        - style
+    gomodguard:
+      blocked:
+        modules:
+          - github.com/go-logr/logr:
+              recommendations:
+                - k8s.io/klog/v2
+    govet:
+      enable:
+        - shadow
+        - nilness
+        - nilfunc
+    lll:
+      line-length: 150
+    misspell:
+      locale: US
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+      allow-unused: false
+  exclusions:
+    generated: lax
+    rules:
+      - linters:
+          - govet
+        text: declaration of "(err|ctx)" shadows declaration at
+      - linters:
+          - gosec
+        text: TLS InsecureSkipVerify set true.
+      - linters:
+          - errorlint
+        text: type switch on error will fail on wrapped errors. Use errors.As to check for specific errors
+      - linters:
+          - revive
+          - whitespace
+        path: _test\.go
+      - path: (.+)\.go$
+        text: Error return value of .((os\.)?std(out|err)\..*|.*Close|.*Flush|os\.Remove(All)?|.*printf?|os\.(Un)?Setenv). is not checked
+    paths:
+      - zz_generated.*.go
+      - pkg/client
+      - third_party$
+      - builtin$
+      - examples$
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+formatters:
+  enable:
+    - gci
+    - gofmt
+    - goimports
+  settings:
+    gci:
+      sections:
+        - standard
+        - default
+        - prefix(github.com/ArubaKube/liqo-dashboard)
+    goimports:
+      local-prefixes:
+        - github.com/ArubaKube/liqo-dashboard
+  exclusions:
+    generated: lax
+    paths:
+      - zz_generated.*.go
+      - pkg/client
+      - third_party$
+      - builtin$
+      - examples$

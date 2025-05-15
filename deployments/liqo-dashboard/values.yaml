@@ -1,0 +1,74 @@
+image:
+  # tag: "0.1.0"
+  pullPolicy: IfNotPresent
+  frontend:
+    repository: "ghcr.io/arubakube/liqo-dashboard-frontend"
+    tag: f9da2e07ec5b95215d278c6d07e09856b1bdbaf8
+  backend:
+    repository: "ghcr.io/arubakube/liqo-dashboard-backend"
+    tag: f9da2e07ec5b95215d278c6d07e09856b1bdbaf8
+
+imagePullSecrets:
+  - name: regcred
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+securityContext: {}
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+labels: {}
+annotations: {}
+
+backend:
+  enabled: true
+  replicaCount: 1
+  service:
+    type: ClusterIP
+    port: 80
+    # Valid if the service type is NodePort it allows to define the NodePort value.
+    # nodePort: 30842
+  serviceAccount:
+    create: true
+    annotations: {}
+    # If not provided the default release name is used. All the roles necessary for the backend are binded to this service account.
+    name: ""
+  resources: {}
+  securityContext: {}
+
+frontend:
+  enabled: true
+  replicaCount: 1
+  service:
+    type: ClusterIP
+    port: 80
+    # Valid if the service type is NodePort it allows to define the NodePort value.
+    # nodePort: 30842
+  resources: {}
+  securityContext: {}
+  appConfig:
+    api:
+      url: "http://liqo-dashboard.local/v1/api"
+    production: true
+
+ingress:
+  enabled: true
+  annotations: {}
+  labels: {}
+  ingressClassName: "nginx"
+  hosts:
+  - host: liqo-dashboard.local
+    backend:
+      - path: "/v1"
+        # The type of path that the Ingress will use. Defaults to ImplementationSpecific.
+        pathType: Prefix
+    frontend:
+      - path: "/"
+        pathType: Prefix
+  tls: []

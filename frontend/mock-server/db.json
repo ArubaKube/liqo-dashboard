@@ -1,0 +1,142 @@
+{
+  "clusters": [
+    {
+      "name": "milan",
+      "id": "91f11b48-b7ba-44ae-b693-ff081717466d",
+      "peeringType": "OutOfBand",
+      "networkStatus": "Established",
+      "networkLatency": "1ms",
+      "authenticationStatus": "Established",
+      "outgoingPeering": "Established",
+      "apiServerStatus": "Established",
+      "incomingPeering": "Pending",
+      "resources": {
+        "cpu": "6345m",
+        "memory": "14782M",
+        "pods": "99",
+        "ephemeralStorage": "235904704Ki"
+      }
+    },
+    {
+      "name": "rome",
+      "id": "12311b48-b7ba-44ae-b693-fd081717466d",
+      "peeringType": "InBand",
+      "networkStatus": "Established",
+      "networkLatency": "10ms",
+      "authenticationStatus": "Established",
+      "outgoingPeering": "Established",
+      "apiServerStatus": "Established",
+      "incomingPeering": "Established",
+      "resources": {
+        "cpu": "6345m",
+        "memory": "14782M",
+        "pods": "99",
+        "ephemeralStorage": "235904704Ki"
+      }
+    },
+    {
+      "name": "paris",
+      "id": "5lop11b48-b7ba-44ae-b693-fc081717466d",
+      "peeringType": "OutOfBand",
+      "networkStatus": "Established",
+      "networkLatency": "3ms",
+      "authenticationStatus": "Established",
+      "outgoingPeering": "Established",
+      "apiServerStatus": "Error",
+      "incomingPeering": "None",
+      "resources": {
+        "cpu": "6345m",
+        "memory": "14782M",
+        "pods": "99",
+        "ephemeralStorage": "235904704Ki"
+      }
+    }
+  ],
+  "namespaces": [
+    {
+      "name": "liqo-demo",
+      "status": "Active",
+      "age": "2023-10-17 18:08:18 +0200 CEST",
+      "offloading": {
+        "namespaceMappingStrategy": "DefaultName",
+        "podOffloadingStrategy": "LocalAndRemote",
+        "offloadingPhase": "Ready"
+      }
+    },
+    {
+      "name": "another-offloaded-ns",
+      "status": "Active",
+      "age": "2023-10-17 15:23:16 +0200 CEST",
+      "offloading": {
+        "namespaceMappingStrategy": "DefaultName",
+        "podOffloadingStrategy": "LocalAndRemote",
+        "offloadingPhase": "Ready"
+      }
+    }
+  ],
+  "pods": [
+    {
+      "name": "server-854969cb9-ggmll",
+      "namespace": "liqo-demo",
+      "nodeName": "rome",
+      "labels": {
+        "app": "server",
+        "liqo.io/shadowPod": "true",
+        "pod-template-hash": "854969cb9"
+      },
+      "status": "Running",
+      "restartPolicy": "Always",
+      "images": [
+        "nginx"
+      ],
+      "creationTime": "2024-12-05 16:24:57 +0100 CET"
+    },
+    {
+      "name": "postgres-854969cb9-ggmll",
+      "namespace": "liqo-demo",
+      "nodeName": "paris",
+      "labels": {
+        "app": "postgres",
+        "liqo.io/shadowPod": "true",
+        "pod-template-hash": "854969cb9"
+      },
+      "status": "Running",
+      "restartPolicy": "Always",
+      "images": [
+        "postgres"
+      ],
+      "creationTime": "2024-11-05 16:24:57 +0100 CET"
+    },
+    {
+      "name": "agent-854969cb9-ggmll",
+      "namespace": "another-offloaded-ns",
+      "nodeName": "milan",
+      "labels": {
+        "app": "agent"
+      },
+      "status": "Running",
+      "restartPolicy": "Always",
+      "images": [
+        "agent"
+      ],
+      "creationTime": "2024-12-05 16:24:57 +0100 CET"
+    }
+  ],
+  "nodes": [
+    {
+      "name": "rome",
+      "capacity": {
+        "cpu": "6345m",
+        "memory": "14782M",
+        "pods": "99",
+        "ephemeralStorage": "235904704Ki"
+      },
+      "used": {
+        "cpu": "131591391n",
+        "memory": "970260Ki",
+        "pods": "0",
+        "ephemeralStorage": "0"
+      }
+    }
+  ]
+}

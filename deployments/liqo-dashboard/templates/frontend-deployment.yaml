@@ -1,0 +1,67 @@
+{{- if .Values.frontend.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "liqo-dashboard.fullname" . }}-frontend
+  labels:
+    {{ include "liqo-dashboard.frontendSelector" . }}
+    chart: {{ include "liqo-dashboard.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    {{- with .Values.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- with .Values.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  replicas: {{ .Values.frontend.replicaCount }}
+  selector:
+    matchLabels:
+      {{ include "liqo-dashboard.frontendSelector" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        {{ include "liqo-dashboard.frontendSelector" .}}
+        release: {{ .Release.Name }}
+        {{- with .Values.labels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        {{- with .Values.annotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      securityContext:
+      {{ toYaml .Values.podSecurityContext | indent 8 }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{ toYaml .Values.imagePullSecrets | indent 8 }}
+      {{- end }}
+      containers:
+        - name: frontend
+          image: "{{ .Values.image.frontend.repository }}:{{ .Values.image.frontend.tag | default (.Values.image.tag | default .Chart.AppVersion) }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.frontend.service.port }}
+          resources:
+          {{ toYaml .Values.frontend.resources | indent 12 }}
+          securityContext:
+          {{ toYaml .Values.frontend.securityContext | indent 12 }}
+          volumeMounts:
+            - name: config-volume
+              mountPath: /usr/share/nginx/html/assets/config/config.json
+              subPath: config.json
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ include "liqo-dashboard.fullname" . }}-frontend-config
+      nodeSelector:
+      {{ toYaml .Values.nodeSelector | indent 8 }}
+      tolerations:
+      {{ toYaml .Values.tolerations | indent 8 }}
+      affinity:
+      {{ toYaml .Values.affinity | indent 8 }}
+{{- end }}

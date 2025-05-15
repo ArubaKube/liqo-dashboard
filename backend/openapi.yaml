@@ -1,0 +1,244 @@
+openapi: 3.0.0
+info:
+  title: Liqo topology dashboard
+  version: 1.0.0
+paths:
+  /healthz:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: OK
+  /v1/clusters:
+    get:
+      summary: Get list of clusters
+      responses:
+        '200':
+          description: A list of clusters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForeignCluster'
+  /v1/clusters/{id}:
+    get:
+      summary: Get cluster by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A cluster
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForeignCluster'
+  /v1/clusters/{id}/nodes:
+    get:
+      summary: Get nodes of a cluster by cluster ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A node
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Node'
+  /v1/namespaces:
+    get:
+      summary: Get list of namespaces
+      responses:
+        '200':
+          description: A list of namespaces
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Namespace'
+  /v1/namespaces/{name}:
+    get:
+      summary: Get namespace by name
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A namespace
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Namespace'
+  /v1/namespaces/{name}/offloaded:
+    get:
+      summary: Get offloaded pods by namespace name
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A list of offloaded pods
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pod'
+components:
+  schemas:
+    ForeignCluster:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          type: string
+        peeringType:
+          type: string
+          enum:
+            - OutOfBand
+            - InBand
+            - ""
+        networkStatus:
+          type: string
+        networkLatency:
+          type: string
+        resources:
+          $ref: '#/components/schemas/Resources'
+        authenticationStatus:
+          type: string
+        apiServerStatus:
+          $ref: '#/components/schemas/ConditionStatus'
+        outgoingPeering:
+          $ref: '#/components/schemas/ConditionStatus'
+        incomingPeering:
+          $ref: '#/components/schemas/ConditionStatus'
+    Node:
+      type: object
+      properties:
+        name:
+          type: string
+        capacity:
+          $ref: '#/components/schemas/Resources'
+        used:
+          $ref: '#/components/schemas/Resources'
+    Namespace:
+      type: object
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+          # status of the namespace
+          enum:
+            - Active
+            - Terminating
+        creationTime:
+          type: string
+          example: "2021-07-01T00:00:00Z"
+        offloading:
+          $ref: '#/components/schemas/Offloading'
+    Pod:
+      type: object
+      properties:
+        name:
+          type: string
+        namespace:
+          type: string
+        nodeName:
+          type: string
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          example:
+            app: nginx
+        status:
+          type: string
+          enum:
+            - Pending
+            - Running
+            - Succeeded
+            - Failed
+            - Unknown
+        restartPolicy:
+          type: string
+          enum:
+            - Always
+            - OnFailure
+            - Never
+        images:
+          type: array
+          items:
+            type: string
+          example:
+            - envoyproxy/envoy-alpine:v1.18.3
+            - nginx:1.14.2
+        creationTime:
+          type: string
+          example: "2021-07-01T00:00:00Z"
+    Resources:
+      type: object
+      properties:
+        cpu:
+          type: string
+          example: 1
+        memory:
+          type: string
+          example: 10Gi
+        pods:
+          type: string
+          example: 110
+        ephemeralStorage:
+          type: string
+          example: 10Gi
+    Offloading:
+      type: object
+      properties:
+        namespaceMappingStrategy:
+          type: string
+          enum:
+            - EnforceSameName
+            - DefaultName
+        podOffloadingStrategy:
+          type: string
+          enum:
+            - Local
+            - Remote
+            - LocalAndRemote
+        offloadingPhase:
+          type: string
+          enum:
+            - Ready
+            - NoClusterSelected
+            - InProgress
+            - SomeFailed
+            - AllFailed
+            - Terminating
+    ConditionStatus:
+      type: string
+      enum:
+        - None
+        - Pending
+        - Established
+        - Disconnecting
+        - Denied
+        - EmptyDenied
+        - Error
+        - Success
+        - External

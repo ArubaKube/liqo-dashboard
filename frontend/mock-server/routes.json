@@ -1,0 +1,5 @@
+{
+    "/v1/namespaces/*/offloaded": "/pods?namespace=$1",
+    "/v1/clusters/*/nodes": "/nodes",
+    "/v1/*": "/$1"
+}

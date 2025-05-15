@@ -1,0 +1,6 @@
+{
+  "production": false,
+  "api": {
+    "url": "http://localhost:4200/v1"
+  }
+}

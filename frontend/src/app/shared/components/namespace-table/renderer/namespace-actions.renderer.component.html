@@ -1,0 +1,7 @@
+<div *transloco="let t">
+    <button *ngIf="data?.offloading.namespaceMappingStrategy?.length > 0" [routerLink]="'/pods/'+data?.name"
+        class="btn">
+        {{t('namespaces.showPodsAction')}}
+        <svg-icon src="assets/icons/solid/chevron-right.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
+    </button>
+</div>

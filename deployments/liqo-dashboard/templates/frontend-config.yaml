@@ -1,0 +1,9 @@
+{{- if .Values.frontend.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: {{ include "liqo-dashboard.fullname" . }}-frontend-config
+data:
+    config.json: |
+        {{ toJson .Values.frontend.appConfig | indent 4 }}
+{{- end }}

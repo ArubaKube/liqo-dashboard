@@ -1,0 +1,21 @@
+<div class="mx-auto px-4 py-4 sm:px-8 lg:container" *transloco="let t">
+  <app-header></app-header>
+  <div class="flex flex-col gap-4">
+    <div class="flex flex-wrap gap-4">
+      <stat-box
+        [label]="t('dashboard.connectionLabel')"
+        [value]="clusters.length.toString()" />
+      <stat-box
+        [label]="t('dashboard.averageLabel')"
+        [value]="this.getAverageLatency(clusters)+'ms'" />
+      <stat-box
+        [label]="t('dashboard.offloadedNamespaces')"
+        [value]="namespaces.length.toString()" />
+    </div>
+
+    <div class="col-span-4">
+      <app-cluster-list />
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,60 @@
+{{- if .Values.backend.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "liqo-dashboard.fullname" . }}-backend
+  labels:
+    {{ include "liqo-dashboard.backendSelector" . }}
+    chart: {{ include "liqo-dashboard.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    {{- with .Values.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- with .Values.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  replicas: {{ .Values.backend.replicaCount }}
+  selector:
+    matchLabels:
+      {{ include "liqo-dashboard.backendSelector" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        {{ include "liqo-dashboard.backendSelector" . }}
+        release: {{ .Release.Name }}
+        {{- with .Values.labels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        {{- with .Values.annotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "liqo-dashboard.serviceAccountName" . }}
+      securityContext:
+      {{ toYaml .Values.podSecurityContext | indent 8 }}
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{ toYaml .Values.imagePullSecrets | indent 8 }}
+      {{- end }}
+      containers:
+        - name: backend
+          image: "{{ .Values.image.backend.repository }}:{{ .Values.image.backend.tag | default (.Values.image.tag | default .Chart.AppVersion) }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.backend.service.port }}
+          resources:
+          {{ toYaml .Values.backend.resources | indent 12 }}
+          securityContext:
+          {{ toYaml .Values.backend.securityContext | indent 12 }}
+      nodeSelector:
+      {{ toYaml .Values.nodeSelector | indent 8 }}
+      tolerations:
+      {{ toYaml .Values.tolerations | indent 8 }}
+      affinity:
+      {{ toYaml .Values.affinity | indent 8 }}
+{{- end }}

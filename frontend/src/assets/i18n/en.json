@@ -1,0 +1,83 @@
+{
+  "generic": {
+    "requestErrorTitle": "Request Error",
+    "requestErrorText": "The service did not respond appropriately.",
+    "requestConfirmTitle": "Confirm",
+    "requestConfirmText": "Do you want to continue?",
+    "requestConfirmButton": "Confirm",
+    "requestCancelButton": "Cancel",
+    "requestSuccessTitle": "Success",
+    "goToSectionTitle": "Go to section",
+    "connectButton": "Connect",
+    "used": "Used",
+    "free": "Free",
+    "menu": "Menu"
+  },
+  "dashboard": {
+    "title": "Liqo dashboard",
+    "connectionLabel": "Connections",
+    "averageLabel": "Average Latency",
+    "offloadedNamespaces": "Offloaded namespaces"
+  },
+  "menu": {
+    "dashboard": "Dashboard",
+    "offloadedNamespaces": "Offloaded namespaces",
+    "clusters": "Clusters",
+    "namespaces": "Namespaces"
+  },
+  "pods": {
+    "nameLabel": "Name",
+    "namespaceLabel": "Namespace",
+    "nodeNameLabel": "Node name",
+    "labelsLabel": "Labels",
+    "statusLabel": "Status",
+    "restartPolicyLabel": "Restart Policy",
+    "imagesLabel": "Images"
+  },
+  "clusters": {
+    "list": {
+      "localCluster": "Local Cluster",
+      "clusterNameLabel": "Name",
+      "clusterOutgoingPeeringLabel": "Outgoing Peering",
+      "clusterTypeLabel": "Type",
+      "clusterPeeringTypeLabel": "Peering Type",
+      "clusterIncomingPeeringLabel": "Incoming Peering",
+      "clusterNetworkingLabel": "Networking",
+      "clusterNetworkingStatusLabel": "Networking status",
+      "clusterAuthStatusLabel": "Stato autenticazione",
+      "latency": "Latency",
+      "clusterNetworkingLatencyLabel": "Latency",
+      "clusterApiServerLabel": "Api server",
+      "clusterAuthLabel": "Authentication"
+    },
+    "details": {
+      "peeringInformationWithCluster": "Peering information with cluster",
+      "resourcesUsageOfVirtualNode": "Resources usage of virtual node",
+      "virtualNodeCpuUsage": "Virtual node CPU usage",
+      "virtualNodeMemoryUsage": "Virtual node memory usage",
+      "ramUsage": "RAM usage",
+      "cpuUsage": "CPU usage",
+      "clusterName": "Cluster name",
+      "peeringStatus": "Peering status",
+      "outgoingPeeringStatus": "Outgoing peering status",
+      "incomingPeeringStatus": "Incoming peering status",
+      "modulesStatus": "Modules status",
+      "networkingStatus": "Networking status",
+      "authenticationStatus": "Authentication status",
+      "clusterApiStatus": "Cluster API status",
+      "sharedResources": "Shared resources",
+      "sharedCPU": "Shared CPU",
+      "sharedMemory": "Shared memory"
+    }
+  },
+  "namespaces": {
+    "offloadedNamespaces": "Offloaded namespaces",
+    "nameLabel": "Name",
+    "statusLabel": "Status",
+    "showPodsAction": "Show pods in the namespace",
+    "podsOnNamespace": "Pods on offloaded namespace",
+    "offloadingConfirmQuestion": "Do you want to offload this namespace?",
+    "offloadingSuccessText": "The namespace has been successfully offloaded. Updates will be available soon.",
+    "unoffloadingSuccessText": "The namespace has been successfully unoffloaded. Updates will be available soon."
+  }
+}

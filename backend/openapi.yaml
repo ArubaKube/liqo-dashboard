@@ -104,38 +104,41 @@ components:
     ForeignCluster:
       type: object
       properties:
-        name:
-          type: string
         id:
           type: string
-        peeringType:
+        role:
           type: string
           enum:
-            - OutOfBand
-            - InBand
-            - ""
-        networkStatus:
-          type: string
-        networkLatency:
-          type: string
-        resources:
-          $ref: '#/components/schemas/Resources'
-        authenticationStatus:
+            - Consumer
+            - Provider
+            - ConsumerAndProvider
+            - Unknown
+        apiServerUrl:
           type: string
         apiServerStatus:
           $ref: '#/components/schemas/ConditionStatus'
-        outgoingPeering:
+        networkStatus:
           $ref: '#/components/schemas/ConditionStatus'
-        incomingPeering:
+        authenticationStatus:
           $ref: '#/components/schemas/ConditionStatus'
+        offloadingStatus:
+          $ref: '#/components/schemas/ConditionStatus'
+        networkLatency:
+          type: string
+        resourcesOffered:
+          $ref: '#/components/schemas/Resources'
+        resourcesAcquired:
+          $ref: '#/components/schemas/Resources'
     Node:
       type: object
       properties:
         name:
           type: string
+        clusterID:
+          type: string
         capacity:
           $ref: '#/components/schemas/Resources'
-        used:
+        capacityUsed:
           $ref: '#/components/schemas/Resources'
     Namespace:
       type: object
@@ -144,7 +147,6 @@ components:
           type: string
         status:
           type: string
-          # status of the namespace
           enum:
             - Active
             - Terminating
@@ -197,16 +199,16 @@ components:
       properties:
         cpu:
           type: string
-          example: 1
+          example: "1"
         memory:
           type: string
-          example: 10Gi
+          example: "10Gi"
         pods:
           type: string
-          example: 110
+          example: "110"
         ephemeralStorage:
           type: string
-          example: 10Gi
+          example: "10Gi"
     Offloading:
       type: object
       properties:
@@ -215,6 +217,7 @@ components:
           enum:
             - EnforceSameName
             - DefaultName
+            - SelectedName
         podOffloadingStrategy:
           type: string
           enum:
@@ -236,9 +239,7 @@ components:
         - None
         - Pending
         - Established
-        - Disconnecting
-        - Denied
-        - EmptyDenied
         - Error
-        - Success
-        - External
+        - Ready
+        - NotReady
+        - SomeNotReady

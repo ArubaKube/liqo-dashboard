@@ -1,15 +1,15 @@
 package models
 
 import (
-	offloadingv1alpha1 "github.com/liqotech/liqo/apis/offloading/v1alpha1"
+	offloadingv1beta1 "github.com/liqotech/liqo/apis/offloading/v1beta1"
 	corev1 "k8s.io/api/core/v1"
 )
 
 // Offloading represents the offloading status of a namespace.
 type Offloading struct {
-	NamespaceMappingStrategy offloadingv1alpha1.NamespaceMappingStrategyType `json:"namespaceMappingStrategy"`
-	PodOffloadingStrategy    offloadingv1alpha1.PodOffloadingStrategyType    `json:"podOffloadingStrategy"`
-	OffloadingPhase          offloadingv1alpha1.OffloadingPhaseType          `json:"offloadingPhase"`
+	NamespaceMappingStrategy offloadingv1beta1.NamespaceMappingStrategyType `json:"namespaceMappingStrategy"`
+	PodOffloadingStrategy    offloadingv1beta1.PodOffloadingStrategyType    `json:"podOffloadingStrategy"`
+	OffloadingPhase          offloadingv1beta1.OffloadingPhaseType          `json:"offloadingPhase"`
 }
 
 // Namespace represents a namespace.

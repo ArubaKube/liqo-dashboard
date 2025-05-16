@@ -3,145 +3,255 @@ package getters
 import (
 	"context"
 
-	discoveryv1alpha1 "github.com/liqotech/liqo/apis/discovery/v1alpha1"
-	liqonetv1alpha1 "github.com/liqotech/liqo/apis/net/v1alpha1"
-	liqoResources "github.com/liqotech/liqo/pkg/liqoctl/status/utils/resources"
-	foreignClusterUtils "github.com/liqotech/liqo/pkg/utils/foreignCluster"
-	liqoGetters "github.com/liqotech/liqo/pkg/utils/getters"
-	peeringConditionsUtils "github.com/liqotech/liqo/pkg/utils/peeringConditions"
+	authv1beta1 "github.com/liqotech/liqo/apis/authentication/v1beta1"
+	liqov1beta1 "github.com/liqotech/liqo/apis/core/v1beta1"
+	offloadingv1beta1 "github.com/liqotech/liqo/apis/offloading/v1beta1"
+	liqoconsts "github.com/liqotech/liqo/pkg/consts"
+	fcutils "github.com/liqotech/liqo/pkg/utils/foreigncluster"
+	liqogetters "github.com/liqotech/liqo/pkg/utils/getters"
+	liqolabels "github.com/liqotech/liqo/pkg/utils/labels"
 	corev1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/resource"
 	metricsv1beta1 "k8s.io/metrics/pkg/apis/metrics/v1beta1"
+	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/ArubaKube/liqo-dashboard/pkg/server/models"
 )
 
 // GetForeignClusters returns all the ForeignClusters.
-func GetForeignClusters(ctx context.Context, c client.Client) ([]models.ForeignCluster, error) {
-	var foreignClusterList discoveryv1alpha1.ForeignClusterList
-	if err := c.List(ctx, &foreignClusterList); err != nil {
+func GetForeignClusters(ctx context.Context, cl client.Client) ([]models.ForeignCluster, error) {
+	var foreignClusterList liqov1beta1.ForeignClusterList
+	if err := cl.List(ctx, &foreignClusterList); err != nil {
 		return nil, err
 	}
 
-	var foreignClusters []models.ForeignCluster
+	foreignClusters := make([]models.ForeignCluster, len(foreignClusterList.Items))
 	for i := range foreignClusterList.Items {
-		foreignClusters = append(foreignClusters, parseForeignCluster(ctx, c, &foreignClusterList.Items[i]))
-	}
-
-	if len(foreignClusters) == 0 {
-		foreignClusters = []models.ForeignCluster{}
+		fc, err := parseForeignCluster(ctx, cl, &foreignClusterList.Items[i])
+		if err != nil {
+			return nil, err
+		}
+		foreignClusters[i] = fc
 	}
 
 	return foreignClusters, nil
 }
 
 // GetForeignClusterByID returns the ForeignCluster with the given clusterID.
-func GetForeignClusterByID(ctx context.Context, c client.Client, clusterID string) (*models.ForeignCluster, error) {
-	cluster, err := foreignClusterUtils.GetForeignClusterByID(ctx, c, clusterID)
+func GetForeignClusterByID(ctx context.Context, cl client.Client, clusterID string) (*models.ForeignCluster, error) {
+	cluster, err := fcutils.GetForeignClusterByID(ctx, cl, liqov1beta1.ClusterID(clusterID))
 	if err != nil {
 		return nil, err
 	}
 
-	parsedForeignCluster := parseForeignCluster(ctx, c, cluster)
-	return &parsedForeignCluster, nil
+	fc, err := parseForeignCluster(ctx, cl, cluster)
+	if err != nil {
+		return nil, err
+	}
+
+	return ptr.To(fc), nil
 }
 
 // GetVirtualNodesByClusterID returns the VirtualNodes related to the given clusterID.
-func GetVirtualNodesByClusterID(ctx context.Context, c client.Client, clusterID string) ([]models.Node, error) {
-	cID := &discoveryv1alpha1.ClusterIdentity{
-		ClusterID: clusterID,
-	}
-
-	nodeList, err := liqoGetters.ListNodesByClusterID(ctx, c, cID)
+func GetVirtualNodesByClusterID(ctx context.Context, cl client.Client, clusterID string) ([]models.Node, error) {
+	virtualNodes, err := liqogetters.ListVirtualNodesByClusterID(ctx, cl, liqov1beta1.ClusterID(clusterID))
 	if err != nil {
 		return nil, err
 	}
 
 	var nodes []models.Node
-	for i := range nodeList.Items {
-		nodes = append(nodes, parseVirtualNode(ctx, c, &nodeList.Items[i]))
+	for i := range virtualNodes {
+		parsedNode, err := parseVirtualNode(ctx, cl, &virtualNodes[i])
+		if err != nil {
+			return nil, err
+		}
+		nodes = append(nodes, parsedNode)
 	}
 
 	return nodes, nil
 }
 
-func parseVirtualNode(ctx context.Context, c client.Client, node *corev1.Node) models.Node {
-	var nodeMetrics metricsv1beta1.NodeMetrics
+func parseVirtualNode(ctx context.Context, cl client.Client, vnode *offloadingv1beta1.VirtualNode) (models.Node, error) {
+	nodeName := vnode.Name // the name of the virtual node is the same as the name of the node
+	nodeExists := ptr.Deref(vnode.Spec.CreateNode, false)
 
-	err := c.Get(ctx, client.ObjectKey{Name: node.Name}, &nodeMetrics)
-	if err != nil {
-		nodeMetrics = metricsv1beta1.NodeMetrics{}
-	}
-
-	return models.Node{
-		Name: node.Name,
-		Capacity: models.Resources{
+	var capacity models.Resources
+	var capacityUsed models.Resources
+	if nodeExists {
+		// Get the resources shared with this cluster
+		var node corev1.Node
+		if err := cl.Get(ctx, client.ObjectKey{Name: nodeName}, &node); err != nil {
+			return models.Node{}, err
+		}
+		capacity = models.Resources{
 			CPU:              *node.Status.Capacity.Cpu(),
 			Memory:           *node.Status.Capacity.Memory(),
 			Pods:             *node.Status.Capacity.Pods(),
 			EphemeralStorage: *node.Status.Capacity.StorageEphemeral(),
-		},
-		CapacityUsed: models.Resources{
+		}
+
+		var nodeMetrics metricsv1beta1.NodeMetrics
+		if err := cl.Get(ctx, client.ObjectKey{Name: nodeName}, &nodeMetrics); err != nil {
+			return models.Node{}, err
+		}
+		capacityUsed = models.Resources{
 			CPU:              *nodeMetrics.Usage.Cpu(),
 			Memory:           *nodeMetrics.Usage.Memory(),
 			Pods:             *nodeMetrics.Usage.Pods(),
 			EphemeralStorage: *nodeMetrics.Usage.StorageEphemeral(),
-		},
-	}
-}
-
-func parseForeignCluster(ctx context.Context, c client.Client, foreignCluster *discoveryv1alpha1.ForeignCluster) models.ForeignCluster {
-	// Get the resources shared with this cluster
-	var sharedResources corev1.ResourceList
-	switch {
-	case foreignClusterUtils.IsOutgoingEnabled(foreignCluster):
-		sharedResources, _ = liqoResources.GetAcquiredTotal(ctx, c, foreignCluster.Spec.ClusterIdentity.ClusterID)
-	case foreignClusterUtils.IsIncomingEnabled(foreignCluster):
-		sharedResources, _ = liqoResources.GetSharedTotal(ctx, c, foreignCluster.Spec.ClusterIdentity.ClusterID)
-	}
-
-	// Get the info about the vpn
-	vpnInfo, err := liqoGetters.GetTunnelEndpoint(ctx, c, &foreignCluster.Spec.ClusterIdentity, foreignCluster.Status.TenantNamespace.Local)
-	if err != nil {
-		vpnInfo = &liqonetv1alpha1.TunnelEndpoint{}
-	}
-
-	var networkStatus string
-	var authStatus string
-	var incomingPeering discoveryv1alpha1.PeeringConditionStatusType
-	var outgoingPeering discoveryv1alpha1.PeeringConditionStatusType
-
-	for _, condition := range foreignCluster.Status.PeeringConditions {
-		switch condition.Type { //nolint:exhaustive // no need to iterate over all the conditions.
-		case "OutgoingPeering":
-			outgoingPeering = condition.Status
-		case "IncomingPeering":
-			incomingPeering = condition.Status
-		case "AuthenticationStatus":
-			authStatus = string(condition.Status)
-		case "NetworkStatus":
-			networkStatus = string(condition.Status)
 		}
 	}
 
-	// Get the API Server status
-	apiServerStatus := peeringConditionsUtils.GetStatus(foreignCluster, discoveryv1alpha1.APIServerStatusCondition)
+	return models.Node{
+		Name:         vnode.Name,
+		ClusterID:    vnode.Spec.ClusterID,
+		Capacity:     capacity,
+		CapacityUsed: capacityUsed,
+	}, nil
+}
+
+func parseForeignCluster(ctx context.Context, cl client.Client, fc *liqov1beta1.ForeignCluster) (models.ForeignCluster, error) {
+	// Get the resources acquired from this cluster (foreigncluster is a provider)
+	resourcesAcquired, err := getResourcesAcquired(ctx, cl, fc)
+	if err != nil {
+		return models.ForeignCluster{}, err
+	}
+
+	// Get the resources offered to this cluster (foreigncluster is a consumer)
+	resourcesOffered, err := getResourcesOffered(ctx, cl, fc)
+	if err != nil {
+		return models.ForeignCluster{}, err
+	}
+
+	// Get the network latency
+	networkLatency, err := getNetworkLatency(ctx, cl, fc)
+	if err != nil {
+		return models.ForeignCluster{}, err
+	}
 
 	return models.ForeignCluster{
-		Name:           foreignCluster.Name,
-		ID:             foreignCluster.Spec.ClusterIdentity.ClusterID,
-		PeeringType:    foreignCluster.Spec.PeeringType,
-		NetworkLatency: vpnInfo.Status.Connection.Latency.Value,
-		Resources: models.Resources{
-			CPU:              *sharedResources.Cpu(),
-			Memory:           *sharedResources.Memory(),
-			Pods:             *sharedResources.Pods(),
-			EphemeralStorage: *sharedResources.StorageEphemeral(),
-		},
-		NetworkStatus:        networkStatus,
-		APIServerStatus:      apiServerStatus,
-		AuthenticationStatus: authStatus,
-		OutgoingPeering:      outgoingPeering,
-		IncomingPeering:      incomingPeering,
+		ID:                   fc.Spec.ClusterID,
+		Role:                 fc.Status.Role,
+		APIServerURL:         fc.Status.APIServerURL,
+		APIServerStatus:      fcutils.GetAPIServerStatus(fc),
+		NetworkStatus:        getNetworkStatus(fc),
+		AuthenticationStatus: getAuthenticationStatus(fc),
+		OffloadingStatus:     getOffloadingStatus(fc),
+		NetworkLatency:       networkLatency,
+		ResourcesAcquired:    resourcesAcquired,
+		ResourcesOffered:     resourcesOffered,
+	}, nil
+}
+
+func getResourcesAcquired(ctx context.Context, cl client.Client, fc *liqov1beta1.ForeignCluster) (models.Resources, error) {
+	localResSlices, err := liqogetters.ListResourceSlicesByLabel(ctx, cl, corev1.NamespaceAll,
+		liqolabels.LocalLabelSelectorForCluster(string(fc.Spec.ClusterID)))
+	if err != nil {
+		return models.Resources{}, err
 	}
+
+	return getResourcesFromResourceSlice(localResSlices), nil
+}
+
+func getResourcesOffered(ctx context.Context, cl client.Client, fc *liqov1beta1.ForeignCluster) (models.Resources, error) {
+	remoteResSlices, err := liqogetters.ListResourceSlicesByLabel(ctx, cl, corev1.NamespaceAll,
+		liqolabels.RemoteLabelSelectorForCluster(string(fc.Spec.ClusterID)))
+	if err != nil {
+		return models.Resources{}, err
+	}
+
+	return getResourcesFromResourceSlice(remoteResSlices), nil
+}
+
+func getResourcesFromResourceSlice(resSlices []authv1beta1.ResourceSlice) models.Resources {
+	// Initialize the total offered resources to 0
+	cpuTot := resource.NewQuantity(0, resource.DecimalSI)
+	memTot := resource.NewQuantity(0, resource.BinarySI)
+	podsTot := resource.NewQuantity(0, resource.DecimalSI)
+	storageTot := resource.NewQuantity(0, resource.BinarySI)
+
+	for i := range resSlices {
+		if resSlices[i].Status.Resources == nil {
+			continue
+		}
+		cpuTot.Add(*resSlices[i].Status.Resources.Cpu())
+		memTot.Add(*resSlices[i].Status.Resources.Memory())
+		podsTot.Add(*resSlices[i].Status.Resources.Pods())
+		storageTot.Add(*resSlices[i].Status.Resources.StorageEphemeral())
+	}
+
+	return models.Resources{
+		CPU:              *cpuTot,
+		Memory:           *memTot,
+		Pods:             *podsTot,
+		EphemeralStorage: *storageTot,
+	}
+}
+
+func getNetworkStatus(fc *liqov1beta1.ForeignCluster) liqov1beta1.ConditionStatusType {
+	if !fc.Status.Modules.Networking.Enabled {
+		return liqov1beta1.ConditionStatusNone
+	}
+
+	return fcutils.GetStatus(fc.Status.Modules.Networking.Conditions, liqov1beta1.NetworkConnectionStatusCondition)
+}
+
+func getAuthenticationStatus(fc *liqov1beta1.ForeignCluster) liqov1beta1.ConditionStatusType {
+	if !fc.Status.Modules.Authentication.Enabled {
+		return liqov1beta1.ConditionStatusNone
+	}
+
+	switch fc.Status.Role {
+	case liqov1beta1.ConsumerRole:
+		return fcutils.GetStatus(fc.Status.Modules.Authentication.Conditions, liqov1beta1.AuthTenantStatusCondition)
+	case liqov1beta1.ProviderRole:
+		return fcutils.GetStatus(fc.Status.Modules.Authentication.Conditions, liqov1beta1.AuthIdentityControlPlaneStatusCondition)
+	case liqov1beta1.ConsumerAndProviderRole:
+		tenantCond := fcutils.GetStatus(fc.Status.Modules.Authentication.Conditions, liqov1beta1.AuthTenantStatusCondition)
+		identityCond := fcutils.GetStatus(fc.Status.Modules.Authentication.Conditions, liqov1beta1.AuthIdentityControlPlaneStatusCondition)
+		if tenantCond == liqov1beta1.ConditionStatusReady && identityCond == liqov1beta1.ConditionStatusReady {
+			return liqov1beta1.ConditionStatusReady
+		}
+		if tenantCond == liqov1beta1.ConditionStatusError || identityCond == liqov1beta1.ConditionStatusError {
+			return liqov1beta1.ConditionStatusError
+		}
+		return liqov1beta1.ConditionStatusNone
+	default:
+		return liqov1beta1.ConditionStatusNone
+	}
+}
+
+func getOffloadingStatus(fc *liqov1beta1.ForeignCluster) liqov1beta1.ConditionStatusType {
+	if !fc.Status.Modules.Offloading.Enabled {
+		return liqov1beta1.ConditionStatusNone
+	}
+
+	switch fc.Status.Role {
+	case liqov1beta1.ProviderRole, liqov1beta1.ConsumerAndProviderRole:
+		vnodeCond := fcutils.GetStatus(fc.Status.Modules.Offloading.Conditions, liqov1beta1.OffloadingVirtualNodeStatusCondition)
+		nodeCond := fcutils.GetStatus(fc.Status.Modules.Offloading.Conditions, liqov1beta1.OffloadingNodeStatusCondition)
+		if vnodeCond == liqov1beta1.ConditionStatusReady && nodeCond == liqov1beta1.ConditionStatusReady {
+			return liqov1beta1.ConditionStatusReady
+		}
+		if vnodeCond == liqov1beta1.ConditionStatusError || nodeCond == liqov1beta1.ConditionStatusError {
+			return liqov1beta1.ConditionStatusError
+		}
+		return liqov1beta1.ConditionStatusNone
+	default:
+		return liqov1beta1.ConditionStatusNone
+	}
+}
+
+func getNetworkLatency(ctx context.Context, cl client.Client, fc *liqov1beta1.ForeignCluster) (string, error) {
+	if !fc.Status.Modules.Networking.Enabled {
+		return liqoconsts.NotApplicable, nil
+	}
+
+	connection, err := liqogetters.GetConnectionByClusterID(ctx, cl, string(fc.Spec.ClusterID))
+	if err != nil {
+		return "", err
+	}
+
+	return connection.Status.Latency.Value, nil
 }

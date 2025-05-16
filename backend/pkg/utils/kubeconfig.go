@@ -3,11 +3,11 @@ package utils
 import (
 	"fmt"
 
-	discoveryv1alpha1 "github.com/liqotech/liqo/apis/discovery/v1alpha1"
-	netv1alpha1 "github.com/liqotech/liqo/apis/net/v1alpha1"
-	offloadingv1alpha1 "github.com/liqotech/liqo/apis/offloading/v1alpha1"
-	sharingv1alpha1 "github.com/liqotech/liqo/apis/sharing/v1alpha1"
-	virtualkubeletv1alpha1 "github.com/liqotech/liqo/apis/virtualkubelet/v1alpha1"
+	authv1beta1 "github.com/liqotech/liqo/apis/authentication/v1beta1"
+	liqov1beta1 "github.com/liqotech/liqo/apis/core/v1beta1"
+	ipamv1alpha1 "github.com/liqotech/liqo/apis/ipam/v1alpha1"
+	networkingv1beta1 "github.com/liqotech/liqo/apis/networking/v1beta1"
+	offloadingv1beta1 "github.com/liqotech/liqo/apis/offloading/v1beta1"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
@@ -23,11 +23,11 @@ var (
 func init() {
 	utilruntime.Must(metricsv1beta1.AddToScheme(scheme))
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
-	utilruntime.Must(discoveryv1alpha1.AddToScheme(scheme))
-	utilruntime.Must(netv1alpha1.AddToScheme(scheme))
-	utilruntime.Must(offloadingv1alpha1.AddToScheme(scheme))
-	utilruntime.Must(sharingv1alpha1.AddToScheme(scheme))
-	utilruntime.Must(virtualkubeletv1alpha1.AddToScheme(scheme))
+	utilruntime.Must(liqov1beta1.AddToScheme(scheme))
+	utilruntime.Must(offloadingv1beta1.AddToScheme(scheme))
+	utilruntime.Must(networkingv1beta1.AddToScheme(scheme))
+	utilruntime.Must(authv1beta1.AddToScheme(scheme))
+	utilruntime.Must(ipamv1alpha1.AddToScheme(scheme))
 }
 
 // GetClient returns a new client.Client.

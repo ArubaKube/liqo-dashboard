@@ -1,19 +1,19 @@
 package models
 
 import (
-	"github.com/liqotech/liqo/apis/discovery/v1alpha1"
+	liqov1beta1 "github.com/liqotech/liqo/apis/core/v1beta1"
 )
 
 // ForeignCluster is a struct that representing a foreign cluster.
 type ForeignCluster struct {
-	Name                 string                              `json:"name"`
-	ID                   string                              `json:"id"`
-	PeeringType          v1alpha1.PeeringType                `json:"peeringType"`
-	NetworkStatus        string                              `json:"networkStatus"`
-	NetworkLatency       string                              `json:"networkLatency"`
-	Resources            Resources                           `json:"resources"`
-	AuthenticationStatus string                              `json:"authenticationStatus"`
-	APIServerStatus      v1alpha1.PeeringConditionStatusType `json:"apiServerStatus"`
-	OutgoingPeering      v1alpha1.PeeringConditionStatusType `json:"outgoingPeering"`
-	IncomingPeering      v1alpha1.PeeringConditionStatusType `json:"incomingPeering"`
+	ID                   liqov1beta1.ClusterID           `json:"id"`
+	Role                 liqov1beta1.RoleType            `json:"role"`
+	APIServerURL         string                          `json:"apiServerUrl"`
+	APIServerStatus      liqov1beta1.ConditionStatusType `json:"apiServerStatus"`
+	NetworkStatus        liqov1beta1.ConditionStatusType `json:"networkStatus"`
+	AuthenticationStatus liqov1beta1.ConditionStatusType `json:"authenticationStatus"`
+	OffloadingStatus     liqov1beta1.ConditionStatusType `json:"offloadingStatus"`
+	NetworkLatency       string                          `json:"networkLatency"`
+	ResourcesOffered     Resources                       `json:"resourcesOffered"`
+	ResourcesAcquired    Resources                       `json:"resourcesAcquired"`
 }

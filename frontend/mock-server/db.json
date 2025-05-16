@@ -7,9 +7,7 @@
       "networkStatus": "Established",
       "networkLatency": "1ms",
       "authenticationStatus": "Established",
-      "outgoingPeering": "Established",
       "apiServerStatus": "Established",
-      "incomingPeering": "Pending",
       "resources": {
         "cpu": "6345m",
         "memory": "14782M",
@@ -24,9 +22,7 @@
       "networkStatus": "Established",
       "networkLatency": "10ms",
       "authenticationStatus": "Established",
-      "outgoingPeering": "Established",
       "apiServerStatus": "Established",
-      "incomingPeering": "Established",
       "resources": {
         "cpu": "6345m",
         "memory": "14782M",
@@ -41,9 +37,7 @@
       "networkStatus": "Established",
       "networkLatency": "3ms",
       "authenticationStatus": "Established",
-      "outgoingPeering": "Established",
       "apiServerStatus": "Error",
-      "incomingPeering": "None",
       "resources": {
         "cpu": "6345m",
         "memory": "14782M",

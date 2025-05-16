@@ -24,9 +24,9 @@ export class ClusterTableComponent implements OnInit {
   ngOnInit(): void {
     this.columnDefs = [
       { headerName: 'Status', valueGetter: (v) => evaluateStatus(v), cellRenderer: ClusterStatusRendererComponent },
-      { headerName: 'id', field: 'id' },
-      { headerValueGetter: () => this.translateService.translate("clusters.list.clusterNameLabel"), field: 'name' },
-      { headerValueGetter: () => this.translateService.translate("clusters.list.clusterPeeringTypeLabel"), field: 'peeringType' },
+      { headerName: 'ID', field: 'id' },
+      { headerValueGetter: () => this.translateService.translate("clusters.list.clusterRoleLabel"), field: 'role' },
+      { headerValueGetter: () => this.translateService.translate("clusters.list.clusterApiServerLabel"), field: 'apiServerUrl' },
       { headerValueGetter: () => this.translateService.translate("clusters.list.clusterNetworkingLatencyLabel"), field: 'networkLatency' },
       { cellStyle: { "display": "flex" }, field: '', cellRenderer: ClusterActionsRendererComponent, sortable: false, filter: false },
     ];

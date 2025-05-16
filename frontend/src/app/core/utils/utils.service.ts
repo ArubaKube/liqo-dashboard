@@ -15,7 +15,7 @@ export class UtilsService {
       return parseInt(valueStr.slice(0, -1)) / 1000000;
     }
 
-    return parseInt(valueStr);
+    return parseInt(valueStr) * 1000;
   }
 
   convertToGi(valueStr?: string): number {

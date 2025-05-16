@@ -1,12 +1,12 @@
 export interface Cluster {
   id: string;
-  name: string;
-  authenticationStatus?: string;
-  peeringType?: string;
-  networkLatency?: string;
-  networkStatus?: string;
+  role: string;
+  apiServerUrl: string;
   apiServerStatus?: string;
-  outgoingPeering?: string;
-  resources?: { cpu: string, memory: string, pods: string, "ephemeralStorage": string };
-  incomingPeering?: string;
+  networkStatus?: string;
+  authenticationStatus?: string;
+  offloadingStatus?: string;
+  networkLatency?: string;
+  resourcesOffered?: { cpu: string, memory: string, pods: string, "ephemeralStorage": string };
+  resourcesAcquired?: { cpu: string, memory: string, pods: string, "ephemeralStorage": string };
 }

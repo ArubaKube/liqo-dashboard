@@ -4,7 +4,7 @@ import { Component, Input } from "@angular/core";
     selector: 'module-status-badge',
     template: `
       <div>
-        <div *ngIf="status == 'Established' || status == 'Success'" class="flex items-center gap-2 text-green-600">
+        <div *ngIf="status == 'Established' || status == 'Success' || status == 'Ready'" class="flex items-center gap-2 text-green-600">
             <svg-icon src="assets/icons/solid/check.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
             <span>{{ status }}</span>
         </div>
@@ -12,7 +12,7 @@ import { Component, Input } from "@angular/core";
             <svg-icon src="assets/icons/solid/warning.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
             <span>{{ status }}</span>
         </div>
-        <div *ngIf="status == 'Error'" class="flex items-center gap-2 text-red-600">
+        <div *ngIf="status == 'Error' || status == 'NotReady' || status == 'SomeNotReady'" class="flex items-center gap-2 text-red-600">
             <svg-icon src="assets/icons/solid/exclamation-circle.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
             <span>{{ status }}</span>
         </div>

@@ -3,12 +3,16 @@ export enum LiqoModuleStatus {
     ESTABLISHED = 'Established',
     ERROR = 'Error',
     NONE = 'None',
-    SUCCESS = 'Success'
+    READY = 'Ready',
+    NOT_READY = 'NotReady',
+    SOME_NOT_READY = 'SomeNotReady',
 }
 
-export enum PeeringType {
-    IN_BAND = 'InBand',
-    OUT_OF_BAND = 'OutOfBand'
+export enum Role {
+    CONSUMER = 'Consumer',
+    PROVIDER = 'Provider',
+    CONSUMER_AND_PROVIDER = 'ConsumerAndProvider',
+    UNKNOWN = 'Unknown'
 }
 
 export enum PeeringStatus {

@@ -37,18 +37,15 @@
   "clusters": {
     "list": {
       "localCluster": "Local Cluster",
-      "clusterNameLabel": "Name",
-      "clusterOutgoingPeeringLabel": "Outgoing Peering",
-      "clusterTypeLabel": "Type",
-      "clusterPeeringTypeLabel": "Peering Type",
-      "clusterIncomingPeeringLabel": "Incoming Peering",
-      "clusterNetworkingLabel": "Networking",
+      "clusterRoleLabel": "Role",
       "clusterNetworkingStatusLabel": "Networking status",
-      "clusterAuthStatusLabel": "Stato autenticazione",
+      "clusterAuthStatusLabel": "Authentication status",
       "latency": "Latency",
       "clusterNetworkingLatencyLabel": "Latency",
-      "clusterApiServerLabel": "Api server",
-      "clusterAuthLabel": "Authentication"
+      "clusterApiServerLabel": "API server",
+      "clusterNetworkingLabel": "Networking",
+      "clusterAuthLabel": "Authentication",
+      "clusterOffloadingLabel": "Offloading"
     },
     "details": {
       "peeringInformationWithCluster": "Peering information with cluster",
@@ -57,17 +54,21 @@
       "virtualNodeMemoryUsage": "Virtual node memory usage",
       "ramUsage": "RAM usage",
       "cpuUsage": "CPU usage",
-      "clusterName": "Cluster name",
+      "clusterId": "Cluster ID",
       "peeringStatus": "Peering status",
-      "outgoingPeeringStatus": "Outgoing peering status",
-      "incomingPeeringStatus": "Incoming peering status",
+      "role": "Role",
+      "apiServerUrl": "API server URL",
       "modulesStatus": "Modules status",
       "networkingStatus": "Networking status",
       "authenticationStatus": "Authentication status",
-      "clusterApiStatus": "Cluster API status",
-      "sharedResources": "Shared resources",
+      "offloadingStatus": "Offloading status",
+      "apiServerStatus": "API server status",
+      "resourcesAcquired": "Resources acquired",
+      "resourcesOffered": "Resources offered",
       "sharedCPU": "Shared CPU",
-      "sharedMemory": "Shared memory"
+      "sharedMemory": "Shared memory",
+      "sharedPods": "Shared pods",
+      "sharedEphemeralStorage": "Shared ephemeral storage"
     }
   },
   "namespaces": {

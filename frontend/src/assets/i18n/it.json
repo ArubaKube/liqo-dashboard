@@ -37,18 +37,15 @@
   "clusters": {
     "list": {
       "localCluster": "Cluster locale",
-      "clusterNameLabel": "Nome",
-      "clusterOutgoingPeeringLabel": "Peering in uscita",
-      "clusterTypeLabel": "Tipo",
-      "clusterPeeringTypeLabel": "Tipo di peering",
-      "clusterIncomingPeeringLabel": "Peering in entrata",
-      "clusterNetworkingLabel": "Rete",
+      "clusterRoleLabel": "Ruolo",
       "clusterNetworkingStatusLabel": "Stato della rete",
       "clusterAuthStatusLabel": "Stato autenticazione",
       "latency": "Latenza",
       "clusterNetworkingLatencyLabel": "Latenza",
       "clusterApiServerLabel": "Server API",
-      "clusterAuthLabel": "Autenticazione"
+      "clusterNetworkingLabel": "Rete",
+      "clusterAuthLabel": "Autenticazione",
+      "clusterOffloadingLabel": "Offloading"
     },
     "details": {
       "peeringInformationWithCluster": "Informazioni sul peering con il cluster",
@@ -57,17 +54,21 @@
       "virtualNodeMemoryUsage": "Utilizzo memoria del nodo virtuale",
       "ramUsage": "Utilizzo RAM",
       "cpuUsage": "Utilizzo CPU",
-      "clusterName": "Nome del cluster",
+      "clusterId": "ID del cluster",
       "peeringStatus": "Stato del peering",
-      "outgoingPeeringStatus": "Stato del peering in uscita",
-      "incomingPeeringStatus": "Stato del peering in entrata",
+      "role": "Ruolo",
+      "apiServerUrl": "URL API server",
       "modulesStatus": "Stato dei moduli",
       "networkingStatus": "Stato della rete",
       "authenticationStatus": "Stato dell'autenticazione",
-      "clusterApiStatus": "Stato dell'API server del cluster",
-      "sharedResources": "Risorse condivise",
+      "offloadingStatus": "Stato dell'offloading",
+      "apiServerStatus": "Stato dell'API server del cluster",
+      "resourcesAcquired": "Risorse acquisite",
+      "resourcesOffered": "Risorse offerte",
       "sharedCPU": "CPU condivisa",
-      "sharedMemory": "Memoria condivisa"
+      "sharedMemory": "Memoria condivisa",
+      "sharedPods": "Pod condivisi",
+      "sharedEphemeralStorage": "Storage effimero condiviso"
     }
   },
   "namespaces": {

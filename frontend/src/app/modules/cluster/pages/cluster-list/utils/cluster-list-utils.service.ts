@@ -42,38 +42,39 @@ export class ClusterListUtilsService {
                   <div class="flex justify-between flex-row">
                     <span class="font-bold">
                         <i class="fa-regular fa-file-lines"></i>
-                        ${this.translateService.translate("clusters.list.clusterNameLabel")}:
+                        ID:
                     </span>
-                    <span>${v?.data?.name}</span> </div>
+                    <span>${v?.data?.id}</span> </div>
                   <div class="flex-grow border-t border-gray-400"></div>
-                ${v?.data?.peeringType ? `
+                ${v?.data?.role ? `
                     <div class="flex justify-between flex-row mt-2">
                         <span class="font-bold">
                             <i class="fa-solid fa-subscript"></i>
-                            ${this.translateService.translate("clusters.list.clusterTypeLabel")}:
+                            ${this.translateService.translate("clusters.list.clusterRoleLabel")}:
                         </span>
-                        <span>${v?.data?.peeringType}</span>
+                        <span>${v?.data?.role}</span>
                     </div>
                     `
                 : ""}
-                  <div class="flex-grow border-t border-gray-400"></div>
-                  ${v?.data?.outPeering ? `
-                    <div class="flex justify-between flex-row mt-2">
-                        <span class="font-bold">
-                            <i class="fa-solid fa-arrow-up"></i>
-                            ${this.translateService.translate("clusters.list.clusterOutgoingPeeringLabel")}:
-                        </span>
-                        <span>${v?.data?.outPeering}</span>
-                    </div>`
+                    <div class="flex-grow border-t border-gray-400"></div>
+                    ${v?.data ? `
+                      <div class="flex justify-between flex-row mt-2">
+                          <span class="font-bold">
+                              <i class="fa-solid fa-heart"></i>
+                              Status:
+                          </span>
+                          <span>${getPeeringStatus(v?.data)}</span>
+                      </div>
+                    `
                 : ""}
                   <div class="flex-grow border-t border-gray-400"></div>
-                  ${v?.data?.incPeering ? `
-                  <div class="flex justify-between flex-row mt-2">
-                    <span class="font-bold">
-                        <i class="fa-solid fa-arrow-down"></i>
-                        ${this.translateService.translate("clusters.list.clusterIncomingPeeringLabel")}:</span>
-                     <span>${v?.data?.incPeering}</span>
-                 </div>`
+                  ${v?.data?.apiServerStatus ? `
+                    <div class="flex justify-between flex-row mt-2">
+                        <span class="font-bold">
+                            <i class="fa-solid fa-network-wired"></i>
+                            ${this.translateService.translate("clusters.list.clusterApiServerLabel")}:
+                        </span>
+                        <span>${v?.data?.apiServerStatus}</span> </div>`
                 : ""}
                   <div class="flex-grow border-t border-gray-400"></div>
                   ${v?.data?.networkStatus ? `
@@ -86,24 +87,23 @@ export class ClusterListUtilsService {
                      </div>`
                 : ""}
                   <div class="flex-grow border-t border-gray-400"></div>
-                  ${v?.data?.apiServerStatus ? `
-                    <div class="flex justify-between flex-row mt-2">
-                        <span class="font-bold">
-                            <i class="fa-solid fa-network-wired"></i>
-                            ${this.translateService.translate("clusters.list.clusterApiServerLabel")}:
-                        </span>
-                        <span>${v?.data?.apiServerStatus}</span> </div>`
-                : ""}
-                  <div class="flex-grow border-t border-gray-400"></div>
-                  ${v?.data?.authStatus ? `
+                  ${v?.data?.authenticationStatus ? `
                     <div class="flex justify-between flex-row mt-2">
                         <span class="font-bold">
                             <i class="fa-solid fa-lock"></i>
                             ${this.translateService.translate("clusters.list.clusterAuthLabel")}:
                         </span>
-                        <span>${v?.data?.authStatus}</span> </div>`
+                        <span>${v?.data?.authenticationStatus}</span> </div>`
                 : ""}
-                </div>
+                  <div class="flex-grow border-t border-gray-400"></div>
+                  ${v?.data?.offloadingStatus ? `
+                    <div class="flex justify-between flex-row mt-2">
+                        <span class="font-bold">
+                            <i class="fa-solid fa-anchor"></i>
+                            ${this.translateService.translate("clusters.list.clusterOffloadingLabel")}:
+                        </span>
+                        <span>${v?.data?.offloadingStatus}</span> </div>`
+                : ""}
               `
           }
 
@@ -149,13 +149,14 @@ export class ClusterListUtilsService {
       startPosition.x = startPosition.x + 100;
       return {
         id: cluster.id,
-        name: cluster.name,
-        peeringType: cluster.peeringType,
-        outPeering: cluster.outgoingPeering,
-        incPeering: cluster.incomingPeering,
+        name: cluster.id,
+        role: cluster.role,
+        apiServerUrl: cluster.apiServerUrl,
         apiServerStatus: cluster.apiServerStatus,
         networkStatus: cluster.networkStatus,
-        authStatus: cluster.authenticationStatus,
+        authenticationStatus: cluster.authenticationStatus,
+        offloadingStatus: cluster.offloadingStatus,
+        networkLatency: cluster.networkLatency,
         symbolSize: 60,
         x: startPosition.x,
         y: startPosition.y,
@@ -190,7 +191,7 @@ export class ClusterListUtilsService {
   getCategoriesFromClusters(clusters: Cluster[], existingCategories: any) {
     return [...existingCategories, ...clusters.map((cluster: Cluster) => {
       return {
-        "name": cluster.name,
+        "name": cluster.id,
         "symbol": this.getClusterSymbolFromCluster(cluster)
       }
     })]

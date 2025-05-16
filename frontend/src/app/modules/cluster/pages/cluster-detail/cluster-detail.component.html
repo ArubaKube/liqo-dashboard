@@ -1,15 +1,43 @@
 <div class="mx-auto px-4 py-4 sm:px-8 lg:container" *transloco="let t">
   <div *transloco="let t" class="mt-4 mb-8">
     <h1 class="text-xl font-semibold text-gray-900 dark:text-white">
-      {{ t('clusters.details.peeringInformationWithCluster') }} "{{cluster?.name || cluster?.id}}"
+      {{ t('clusters.details.peeringInformationWithCluster') }} "{{cluster?.id}}"
     </h1>
   </div>
   <div class="flex flex-col gap-4">
     <div class="flex flex-col gap-4 flex-wrap bg-white p-8 dark:bg-night-700 text-gray-900 dark:text-white">
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+        Generic
+      </h3>
       <div class="flex flex-wrap gap-4 justify-between">
         <div>
-          <div class="label">{{ t('clusters.details.clusterName') }}</div>
-          <div class="text-base">{{ cluster?.name || '' }}</div>
+          <div class="label">
+            {{ t('clusters.details.clusterId') }}
+          </div>
+          <div class="text-base">{{ cluster?.id || '' }}</div>
+        </div>
+
+        <div>
+          <div class="label">
+            {{ t('clusters.details.role') }}
+          </div>
+          <div class="text-base">{{ cluster?.role || '' }}</div>
+        </div>
+        
+        <div>
+          <div class="label">
+            <i class="fa-solid fa-network-wired"></i>
+            {{ t('clusters.details.apiServerUrl') }}
+          </div>
+          <div class="text-base">{{ cluster?.apiServerUrl || '' }}</div>
+        </div>
+        
+        <div>
+          <div class="label">
+            <i class="fa-solid fa-network-wired"></i>
+            {{ t('clusters.details.apiServerStatus') }}
+          </div>
+          <module-status-badge [status]="cluster?.apiServerStatus || ''" />
         </div>
 
         <div>
@@ -19,21 +47,6 @@
           <cluster-status-badge [peeringStatus]="peeringStatus"/>
         </div>
 
-        <div>
-          <div class="label">
-            <i class="fa-solid fa-arrow-up"></i>
-            {{ t('clusters.details.outgoingPeeringStatus') }}
-          </div>
-          <module-status-badge [status]="cluster?.outgoingPeering || ''" />
-        </div>
-
-        <div>
-          <div class="label">
-            <i class="fa-solid fa-arrow-down"></i>
-            {{ t('clusters.details.incomingPeeringStatus') }}
-          </div>
-          <module-status-badge [status]="cluster?.incomingPeering || ''" />
-        </div>
       </div>
 
       <h3 class="text-lg mt-8 mb-4 font-semibold text-gray-900 dark:text-white">
@@ -58,15 +71,16 @@
 
         <div>
           <div class="label">
-            <i class="fa-solid fa-network-wired"></i>
-            {{ t('clusters.details.clusterApiStatus') }}
+            <i class="fa-solid fa-anchor"></i>
+            {{ t('clusters.details.offloadingStatus') }}
           </div>
-          <module-status-badge [status]="cluster?.apiServerStatus || ''" />
+          <module-status-badge [status]="cluster?.offloadingStatus || ''" />
         </div>
+
       </div>
 
       <h3 class="text-lg mt-8 mb-4 font-semibold text-gray-900 dark:text-white">
-        {{ t('clusters.details.sharedResources') }}
+        {{ t('clusters.details.resourcesAcquired') }}
       </h3>
       <div class="flex flex-wrap gap-12">
         <div>
@@ -74,7 +88,7 @@
             <i class="fa-solid fa-microchip"></i>
             {{ t('clusters.details.sharedCPU') }}
           </div>
-          {{ (cluster?.resources || {}).cpu || '0' }}
+          {{ (cluster?.resourcesAcquired || {}).cpu || '0' }}
         </div>
 
         <div>
@@ -82,7 +96,60 @@
             <i class="fa-solid fa-memory"></i>
             {{ t('clusters.details.sharedMemory') }}
           </div>
-          {{ (cluster?.resources || {}).memory || '0' }}
+          {{ (cluster?.resourcesAcquired || {}).memory || '0' }}
+        </div>
+
+        <div>
+          <div class="label">
+            <i class="fa-solid fa-box-open"></i>
+            {{ t('clusters.details.sharedPods') }}
+          </div>
+          {{ (cluster?.resourcesAcquired || {}).pods || '0' }}
+        </div>
+
+        <div>
+          <div class="label">
+            <i class="fa-solid fa-hdd"></i>
+            {{ t('clusters.details.sharedEphemeralStorage') }}
+          </div>
+          {{ (cluster?.resourcesAcquired || {}).ephemeralStorage || '0' }}
+        </div>
+      </div>
+
+      <h3 class="text-lg mt-8 mb-4 font-semibold text-gray-900 dark:text-white">
+        {{ t('clusters.details.resourcesOffered') }}
+      </h3>
+      <div class="flex flex-wrap gap-12">
+        <div>
+          <div class="label">
+            <i class="fa-solid fa-microchip"></i>
+            {{ t('clusters.details.sharedCPU') }}
+          </div>
+          {{ (cluster?.resourcesOffered || {}).cpu || '0' }}
+        </div>
+
+        <div>
+          <div class="label">
+            <i class="fa-solid fa-memory"></i>
+            {{ t('clusters.details.sharedMemory') }}
+          </div>
+          {{ (cluster?.resourcesOffered || {}).memory || '0' }}
+        </div>
+
+        <div>
+          <div class="label">
+            <i class="fa-solid fa-box-open"></i>
+            {{ t('clusters.details.sharedPods') }}
+          </div>
+          {{ (cluster?.resourcesOffered || {}).pods || '0' }}
+        </div>
+
+        <div>
+          <div class="label">
+            <i class="fa-solid fa-hdd"></i>
+            {{ t('clusters.details.sharedEphemeralStorage') }}
+          </div>
+          {{ (cluster?.resourcesOffered || {}).ephemeralStorage || '0' }}
         </div>
       </div>
     </div>

@@ -74,7 +74,7 @@ export class ClusterListComponent implements OnInit {
     if (selected) {
       if (this.chartOptions.series) {
         const clusterSelected = (this.chartOptions?.series as any)[0].data[selected?.dataIndex[0]]
-        if (clusterSelected.name == this.localNode.localNodeLabel) {
+        if (clusterSelected.id == this.localNode.localNodeLabel) {
           this.selectedCluster = null;
         } else {
           this.selectedCluster = clusterSelected;

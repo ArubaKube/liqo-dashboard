@@ -11,6 +11,7 @@ import (
 	liqogetters "github.com/liqotech/liqo/pkg/utils/getters"
 	liqolabels "github.com/liqotech/liqo/pkg/utils/labels"
 	corev1 "k8s.io/api/core/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metricsv1beta1 "k8s.io/metrics/pkg/apis/metrics/v1beta1"
 	"k8s.io/utils/ptr"
@@ -249,9 +250,13 @@ func getNetworkLatency(ctx context.Context, cl client.Client, fc *liqov1beta1.Fo
 	}
 
 	connection, err := liqogetters.GetConnectionByClusterID(ctx, cl, string(fc.Spec.ClusterID))
-	if err != nil {
+	switch {
+	case client.IgnoreNotFound(err) != nil:
 		return "", err
+	case apierrors.IsNotFound(err):
+		// The connection object does not exist yet. We cannot evaluate the latency.
+		return liqoconsts.NotApplicable, nil
+	default:
+		return connection.Status.Latency.Value, nil
 	}
-
-	return connection.Status.Latency.Value, nil
 }

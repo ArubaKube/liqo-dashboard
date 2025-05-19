@@ -1,14 +1,21 @@
 {
   "clusters": [
     {
-      "name": "milan",
-      "id": "91f11b48-b7ba-44ae-b693-ff081717466d",
+      "id": "milan",
       "role": "Consumer",
       "networkStatus": "Established",
       "networkLatency": "1ms",
-      "authenticationStatus": "Established",
+      "authenticationStatus": "Ready",
       "apiServerStatus": "Established",
-      "resources": {
+      "offloadingStatus": "Ready",
+      "apiServerUrl": "",
+      "resourcesOffered": {
+        "cpu": "5000m",
+        "memory": "10Gi",
+        "pods": "50",
+        "ephemeralStorage": "100Gi"
+      },
+      "resourcesAcquired": {
         "cpu": "6345m",
         "memory": "14782M",
         "pods": "99",
@@ -16,14 +23,21 @@
       }
     },
     {
-      "name": "rome",
-      "id": "12311b48-b7ba-44ae-b693-fd081717466d",
+      "id": "rome",
       "role": "Provider",
       "networkStatus": "Established",
       "networkLatency": "10ms",
-      "authenticationStatus": "Established",
+      "authenticationStatus": "Ready",
       "apiServerStatus": "Established",
-      "resources": {
+      "offloadingStatus": "Ready",
+      "apiServerUrl": "https://rome.example.com",
+      "resourcesOffered": {
+        "cpu": "7000m",
+        "memory": "20Gi",
+        "pods": "100",
+        "ephemeralStorage": "200Gi"
+      },
+      "resourcesAcquired": {
         "cpu": "6345m",
         "memory": "14782M",
         "pods": "99",
@@ -31,14 +45,21 @@
       }
     },
     {
-      "name": "paris",
-      "id": "5lop11b48-b7ba-44ae-b693-fc081717466d",
+      "id": "paris",
       "role": "ConsumerAndProvider",
       "networkStatus": "Established",
       "networkLatency": "3ms",
-      "authenticationStatus": "Established",
+      "authenticationStatus": "Error",
       "apiServerStatus": "Error",
-      "resources": {
+      "offloadingStatus": "NotReady",
+      "apiServerUrl": "https://paris.example.com",
+      "resourcesOffered": {
+        "cpu": "8000m",
+        "memory": "25Gi",
+        "pods": "120",
+        "ephemeralStorage": "300Gi"
+      },
+      "resourcesAcquired": {
         "cpu": "6345m",
         "memory": "14782M",
         "pods": "99",

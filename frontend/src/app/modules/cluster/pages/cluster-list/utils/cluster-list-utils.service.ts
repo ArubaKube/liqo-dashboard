@@ -180,7 +180,7 @@ export class ClusterListUtilsService {
 
   getClusterSymbolFromCluster(cluster: Cluster) {
     const peeringStatus = getPeeringStatus(cluster);
-    if (peeringStatus == PeeringStatus.PENDING) {
+    if (peeringStatus == PeeringStatus.PENDING || peeringStatus == PeeringStatus.NONE) {
       return PEER_WARNING_ICON;
     } else if (peeringStatus == PeeringStatus.ERROR) {
       return PEER_ERROR_ICON;

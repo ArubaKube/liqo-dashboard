@@ -18,7 +18,8 @@ export enum Role {
 export enum PeeringStatus {
     READY = 'Ready',
     PENDING = 'Pending',
-    ERROR = 'Error'
+    ERROR = 'Error',
+    NONE = 'None'
 }
 
 export const PEER_SUCCESS_ICON = 'image:///assets/icons/liqo/node-success.svg';

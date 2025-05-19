@@ -9,7 +9,7 @@ import { PeeringStatus } from "src/app/shared/consts/peering";
             <svg-icon src="assets/icons/solid/check.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
             <span>{{ peeringStatus }}</span>
         </div>
-        <div *ngIf="peeringStatus == 'Pending'" class="flex items-center gap-2 text-yellow-600">
+        <div *ngIf="peeringStatus == 'Pending' || peeringStatus == 'None'" class="flex items-center gap-2 text-yellow-600">
             <svg-icon src="assets/icons/solid/warning.svg" [svgClass]="'h-4 w-4'"> </svg-icon>
             <span>{{ peeringStatus }}</span>
         </div>

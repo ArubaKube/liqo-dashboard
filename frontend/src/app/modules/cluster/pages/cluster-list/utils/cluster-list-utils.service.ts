@@ -22,6 +22,8 @@ import { getPeeringStatus } from 'src/app/shared/utils/utils';
 import { AppConfigService } from "../../../../../core/services/config/app-config.service";
 import { Cluster } from "../../../models/cluster";
 
+export const LOCAL_CLUSTER_ID: string = 'Local Cluster';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -37,40 +39,40 @@ export class ClusterListUtilsService {
         trigger: 'item',
         triggerOn: 'mousemove',
         formatter: (v: any) => {
-          let template = ""
-          if (v.data.latency) {
-            template = `
-                <div class="flex flex-col w-72 p-2" >
-                  ${v?.data?.latency ? `
+          if (v.data.id !== LOCAL_CLUSTER_ID) {
+            let template = "";
+            if (v.data.latency) {
+              template = `
+                  <div class="flex flex-col w-72 p-2" >
+                    ${v?.data?.latency ? `
+                      <div class="flex justify-between flex-row">
+                          <span class="font-bold">
+                              <i class="fa-solid fa-gauge"></i>
+                             ${this.translateService.translate("clusters.list.latency")}:
+                          </span>
+                          <span>${v?.data?.latency}</span>
+                      </div>`
+                  : ""}
+                  </div>
+                `;
+            } else {
+              template = `
+                  <div class="flex flex-col w-72 p-2">
                     <div class="flex justify-between flex-row">
-                        <span class="font-bold">
-                            <i class="fa-solid fa-gauge"></i>
-                           ${this.translateService.translate("clusters.list.latency")}:
-                        </span>
-                        <span>${v?.data?.latency}</span>
-                    </div>`
-                : ""}
-                </div>
-              `
-          } else {
-            template = `
-                <div class="flex flex-col w-72 p-2">
-                  <div class="flex justify-between flex-row">
-                    <span class="font-bold">
-                        <i class="fa-regular fa-file-lines"></i>
-                        ID:
-                    </span>
-                    <span>${v?.data?.id}</span> </div>
-                  <div class="flex-grow border-t border-gray-400"></div>
-                ${v?.data?.role ? `
+                      <span class="font-bold">
+                          <i class="fa-regular fa-file-lines"></i>
+                          ID:
+                      </span>
+                      <span>${v?.data?.id}</span> </div>
+                    <div class="flex-grow border-t border-gray-400"></div>
+                  ${v?.data?.role ? `
                     <div class="flex justify-between flex-row mt-2">
                         <span class="font-bold">
                             <i class="fa-solid fa-subscript"></i>
                             ${this.translateService.translate("clusters.list.clusterRoleLabel")}:
                         </span>
                         <span>${v?.data?.role}</span>
-                    </div>
-                    `
+                    </div>`
                 : ""}
                     <div class="flex-grow border-t border-gray-400"></div>
                     ${v?.data ? `
@@ -80,8 +82,7 @@ export class ClusterListUtilsService {
                               Status:
                           </span>
                           <span>${getPeeringStatus(v?.data)}</span>
-                      </div>
-                    `
+                      </div>`
                 : ""}
                   <div class="flex-grow border-t border-gray-400"></div>
                   ${v?.data?.apiServerStatus ? `
@@ -120,10 +121,11 @@ export class ClusterListUtilsService {
                         </span>
                         <span>${v?.data?.offloadingStatus}</span> </div>`
                 : ""}
-              `
+                `
+            }
+            return template;
           }
-
-          return template;
+          return "";
         },
       },
       legend: {
@@ -137,7 +139,7 @@ export class ClusterListUtilsService {
     return {
       nodes: [
         {
-          id: "main",
+          id: LOCAL_CLUSTER_ID,
           name: localNode.localNodeLabel,
           symbolSize: localNode.localNodeSymbolSize,
           x: -87.93029,
@@ -184,7 +186,7 @@ export class ClusterListUtilsService {
   getLinksFromClusters(clusters: Cluster[], existingLinks: any) {
     return [...clusters.map((cluster: Cluster) => {
       return {
-        source: "main",
+        source: LOCAL_CLUSTER_ID,
         target: cluster.id,
         lineStyle: {
           color: "target",

@@ -23,6 +23,7 @@ import { SpinnerNgxAdapterService } from "../../../../core/services/spinner/spin
 import { Cluster } from "../../models/cluster";
 import { ClusterService } from "../../services/cluster.service";
 import { ClusterListUtilsService } from "./utils/cluster-list-utils.service";
+import { LOCAL_CLUSTER_ID } from './utils/cluster-list-utils.service';
 
 
 @Component({
@@ -40,7 +41,7 @@ export class ClusterListComponent implements OnInit {
   // Chart configuration
   localNode = {
     localNodeImage: 'image:///assets/icons/outline/home.svg',
-    localNodeLabel: 'Local Cluster',
+    localNodeLabel: LOCAL_CLUSTER_ID,
     localNodeSymbolSize: 40,
   }
   initialData = this.clusterListUtilsService.getInitialData(this.localNode);

@@ -1,15 +1,16 @@
 image:
-  # tag: "0.1.0"
+  tag: "v0.1.0"
   pullPolicy: IfNotPresent
   frontend:
     repository: "ghcr.io/arubakube/liqo-dashboard-frontend"
-    tag: f9da2e07ec5b95215d278c6d07e09856b1bdbaf8
+    # tag: "v0.1.0"
   backend:
     repository: "ghcr.io/arubakube/liqo-dashboard-backend"
-    tag: f9da2e07ec5b95215d278c6d07e09856b1bdbaf8
+    # tag: "v0.1.0"
 
 imagePullSecrets:
-  - name: regcred
+  # - name: regcred
+
 nameOverride: ""
 fullnameOverride: ""
 

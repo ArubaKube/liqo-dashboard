@@ -55,14 +55,14 @@ frontend:
   securityContext: {}
   appConfig:
     api:
-      url: "http://liqo-dashboard.local/v1/api"
+      url: "http://liqo-dashboard.local/v1"
     production: true
 
 ingress:
   enabled: true
   annotations: {}
   labels: {}
-  ingressClassName: "nginx"
+  # ingressClassName: "nginx"
   hosts:
   - host: liqo-dashboard.local
     backend:

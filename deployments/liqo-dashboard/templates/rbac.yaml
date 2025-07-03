@@ -5,16 +5,38 @@ metadata:
   name: {{ include "liqo-dashboard.fullname" . }}
 rules:
 - apiGroups:
-  - "discovery.liqo.io"
+  - "core.liqo.io"
   resources:
   - foreignclusters
   verbs:
   - get
   - list
 - apiGroups:
+  - "networking.liqo.io"
+  resources:
+  - connections
+  verbs:
+  - get
+  - list
+- apiGroups:
   - "offloading.liqo.io"
   resources:
+  - virtualnodes
   - namespaceoffloadings
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - "authentication.liqo.io"
+  resources:
+  - resourceslices
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - "metrics.k8s.io"
+  resources:
+  - nodes
   verbs:
   - get
   - list

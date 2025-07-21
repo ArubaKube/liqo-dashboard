@@ -37,9 +37,10 @@ You can install this UI via the [provided Helm Chart](./deployments/).
 ## Quick test
 
 The Liqo UI has been designed to work on a production-ready cluster, e.g., equipped with an external load balancer and an ingress controller.
-However, if you would like to make a quick test of this software on a 'toy' cluster, we can suggest the following setup:
+However, if you would like to make a quick test of this software on a 'toy' cluster, which has neither a _load balancer_ not an _ingress controller_, we can suggest the following setup:
 
 - Install a Kubernetes cluster (e.g., K3s with the default install)
+- Install Liqo and possibly start a peering with another cluster
 - Update the following parameters in the Liqo UI Helm chart:
   - `backend.service.type`: `NodePort`
   - `frontend.service.type`: `NodePort`
@@ -50,5 +51,5 @@ However, if you would like to make a quick test of this software on a 'toy' clus
   - `backend.service.port`: use the TCP port assigned to the NodePort of the backend
   - `frontend.appConfig.api.url`: use the following URL: `http://liqo-dashboard.local:TCP_FRONTEND_PORT/v1/api` where the `TCP_FRONTEND_PORT` is the TCP port assigned to the NodePort frontend service (e.g., 32075)
 - Update the new values to the existing Liqo UI install, using the `helm upgrade` command (e.g. `helm upgrade my-release ./deployments/liqo-dashboard`)
-- Modify the `/etc/hosts` file (or `C:\Windows\system32\drivers\etc\hosts` in Windows) the computer where you will run the browser that connects to the Liqo UI and add an entry that maps the `liqo-dashboard.local` host with the IP address of the machine that hosts the kubernetes cluster (e.g., `KUBERNETES_HOST_IP_ADDRESS    liqo-dashboard.local`)
-- Start a browser and connect to the Liqo UI using the following URL: `http://liqo-dashboard.local:TCP_FRONTEND_PORT`
+- Modify the `/etc/hosts` file (or `C:\Windows\system32\drivers\etc\hosts` in Windows) the computer where you will run the browser that connects to the Liqo UI and add an entry that maps the `liqo-dashboard.local` host with the IP address of the machine where you kubernetes cluster is running (e.g., `KUBERNETES_HOST_IP_ADDRESS    liqo-dashboard.local`)
+- Launch a browser and connect to the Liqo UI using the following URL: `http://liqo-dashboard.local:TCP_FRONTEND_PORT`

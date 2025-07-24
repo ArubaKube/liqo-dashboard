@@ -18,7 +18,7 @@ You can install this UI via the [provided Helm Chart](./deployments/).
 1. Clone this repository:
 
     ```bash
-    https://github.com/ArubaKube/liqo-dashboard.git
+    git clone https://github.com/ArubaKube/liqo-dashboard.git
     cd liqo-dashboard
     ```
 

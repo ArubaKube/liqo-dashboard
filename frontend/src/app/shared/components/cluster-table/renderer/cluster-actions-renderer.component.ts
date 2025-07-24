@@ -25,8 +25,8 @@ import { Cluster } from "src/app/modules/cluster/models/cluster";
       <div class="flex">
           <button
                 routerLink="/clusters/detail/{{ data.id }}"
-                class="btn">
-            <svg-icon src="assets/icons/outline/arrow-sm-right.svg" [svgClass]="'h-5 w-5'"> </svg-icon>
+                class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded text-sm transition-colors">
+            Details
           </button>
       </div>
   `,

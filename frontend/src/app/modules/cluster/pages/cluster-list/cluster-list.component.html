@@ -38,7 +38,7 @@
             </ng-container>
 
             <ng-container *ngIf="this.viewMode==='graph'">
-                <div *ngIf="this.selectedCluster"
+                <!-- <div *ngIf="this.selectedCluster"
                     class="z-50 bg-white absolute top-2/4 left-3/4 flex w-40 h-auto flex-col shadow-2xl">
                     <div class="flex flex-row justify-between p-2">
                         <span class="font-bold">{{this.selectedCluster.id}}</span>
@@ -51,7 +51,7 @@
                             Details
                         </button>
                     </div>
-                </div>
+                </div> -->
                 <div echarts (chartSelectChanged)="selectedChange($event)" [options]="initialChartOptions"
                     [merge]="chartOptions" class="demo-chart w-full h-full min-h-[50vh]"></div>
             </ng-container>

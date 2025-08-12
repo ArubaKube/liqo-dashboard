@@ -36,7 +36,7 @@ export class ClusterListComponent implements OnInit {
 
   // Cluster info variables
   clusters: Cluster[] = [];
-  
+
   // Chart configuration
   localNode = {
     localNodeImage: 'image:///assets/icons/outline/home.svg',
@@ -90,8 +90,9 @@ export class ClusterListComponent implements OnInit {
     if (selected) {
       if (this.chartOptions.series) {
         const clusterSelected = (this.chartOptions?.series as any)[0].data[selected?.dataIndex[0]]
-        this.router.navigate(['/clusters', 'detail', clusterSelected.id])
-
+        if (clusterSelected.id != LOCAL_CLUSTER_ID) {
+          this.router.navigate(['/clusters', 'detail', clusterSelected.id])
+        }
       }
     }
   }

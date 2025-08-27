@@ -1,6 +1,7 @@
 # Quick Test
 
-The Liqo UI is designed to work on a production-ready cluster (e.g., equipped with an external load balancer and an ingress controller). The following guide explains how to **locally** set up a minimal running configuration using an ingress controller.
+The Liqo UI is designed to work on a production-ready cluster, i.e., equipped with an external load balancer and an ingress controller.
+The following guide explains how to **locally** set up a minimal cluster, running on KinD, where the Liqo UI is reachable through an ingress controller.
 
 ## Using KinD
 

@@ -36,7 +36,7 @@ kind create cluster --name liqo-dashboard --config kind-config.yaml
 kubectl apply -f https://kind.sigs.k8s.io/examples/ingress/deploy-ingress-nginx.yaml
 ```
 
-> At this point, it is also a good idea to install the metrics-server if you have not already.
+> At this point, it is also a good idea to install the metrics-server if you have not already. Instructions about how to setup a metric server are not provided here.
 
 1. **Install Liqoctl**
 

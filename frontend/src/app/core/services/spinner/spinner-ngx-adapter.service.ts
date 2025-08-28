@@ -15,7 +15,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import {Spinner, SpinnerConfig} from "./spinner";
+import {Spinner} from "./spinner";
 import {NgxSpinnerService} from "ngx-spinner";
 
 @Injectable({
@@ -25,7 +25,7 @@ export class SpinnerNgxAdapterService implements Spinner{
 
   constructor(private spinner: NgxSpinnerService) { }
 
-  show(config?: SpinnerConfig) {
+  show() {
     return this.spinner.show()
   }
 

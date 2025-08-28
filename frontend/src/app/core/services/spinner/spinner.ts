@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-export interface SpinnerConfig{
-
-}
 export interface Spinner {
-  show(config?: SpinnerConfig): Promise<unknown>;
+  show(): Promise<unknown>;
   hide(): Promise<unknown>;
 }

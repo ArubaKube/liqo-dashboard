@@ -75,6 +75,7 @@
     "offloadedNamespaces": "Namespace scaricati",
     "nameLabel": "Nome",
     "statusLabel": "Stato",
+    "offloadingLabel": "Criterio di offload",
     "showPodsAction": "Mostra i pod nel namespace",
     "podsOnNamespace": "Pod nel namespace scaricato",
     "offloadingConfirmQuestion": "Vuoi scaricare questo namespace?",

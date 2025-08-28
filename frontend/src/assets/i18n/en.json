@@ -75,6 +75,7 @@
     "offloadedNamespaces": "Offloaded namespaces",
     "nameLabel": "Name",
     "statusLabel": "Status",
+    "offloadingLabel": "Offloading policy",
     "showPodsAction": "Show pods in the namespace",
     "podsOnNamespace": "Pods on offloaded namespace",
     "offloadingConfirmQuestion": "Do you want to offload this namespace?",

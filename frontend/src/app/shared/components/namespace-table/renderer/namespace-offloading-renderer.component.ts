@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 import { Component } from "@angular/core";
+import { TranslocoService } from '@jsverse/transloco';
 import { ICellRendererAngularComp } from "ag-grid-angular";
 import { ICellRendererParams } from 'ag-grid-community';
 
@@ -31,7 +32,7 @@ import { ICellRendererParams } from 'ag-grid-community';
 export class NamespaceOffloadingRendererComponent implements ICellRendererAngularComp {
     public data!: any;
 
-    constructor() {
+    constructor(private translocoService: TranslocoService) {
     }
 
     agInit(params: ICellRendererParams<any>): void {
@@ -45,19 +46,17 @@ export class NamespaceOffloadingRendererComponent implements ICellRendererAngula
     getClass(policy?: string) {
         switch (policy) {
             case 'LocalAndRemote': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
-            case 'LocalOnly': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
+            case 'Local': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
             case 'Remote': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
             default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
         }
     }
 
     getDisplay(policy?: string) {
-        switch (policy) {
-            case 'LocalAndRemote': return 'Local and remote';
-            case 'LocalOnly': return 'Local only';
-            case 'Remote': return 'Remote only';
-            default: return '—';
+        if (['LocalAndRemote', 'Local', 'Remote'].includes(policy || '')) {
+            return this.translocoService.translate(`clusters.offloadingStrategy.strategy${policy}`);
         }
+        return '-';
     }
 
 }

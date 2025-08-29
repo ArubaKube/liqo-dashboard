@@ -69,6 +69,11 @@
       "sharedMemory": "Shared memory",
       "sharedPods": "Shared pods",
       "sharedEphemeralStorage": "Shared ephemeral storage"
+    },
+    "offloadingStrategy": {
+      "strategyLocalAndRemote": "Local and remote",
+      "strategyLocal": "Local",
+      "strategyRemote": "Remote"
     }
   },
   "namespaces": {

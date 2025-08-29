@@ -69,6 +69,11 @@
       "sharedMemory": "Memoria condivisa",
       "sharedPods": "Pod condivisi",
       "sharedEphemeralStorage": "Storage effimero condiviso"
+    },
+    "offloadingStrategy": {
+      "strategyLocalAndRemote": "Locale e remoto",
+      "strategyLocal": "Locale",
+      "strategyRemote": "Remoto"
     }
   },
   "namespaces": {

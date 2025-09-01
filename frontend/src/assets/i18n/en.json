@@ -69,12 +69,18 @@
       "sharedMemory": "Shared memory",
       "sharedPods": "Shared pods",
       "sharedEphemeralStorage": "Shared ephemeral storage"
+    },
+    "offloadingStrategy": {
+      "strategyLocalAndRemote": "Local and remote",
+      "strategyLocal": "Local",
+      "strategyRemote": "Remote"
     }
   },
   "namespaces": {
     "offloadedNamespaces": "Offloaded namespaces",
     "nameLabel": "Name",
     "statusLabel": "Status",
+    "offloadingLabel": "Offloading policy",
     "showPodsAction": "Show pods in the namespace",
     "podsOnNamespace": "Pods on offloaded namespace",
     "offloadingConfirmQuestion": "Do you want to offload this namespace?",

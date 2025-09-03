@@ -34,6 +34,6 @@ You can install this UI via the [provided Helm Chart](./deployments/).
     helm install my-release ./deployments/liqo-dashboard
     ```
 
-## Quick Test
+## Quick start tutorials
 
-Detailed instructions for quickly testing the Liqo UI on a local KinD cluster are available in [test-kind.md](docs/test-kind.md).
+- [Setup of the Liqo UI on a KinD cluster](docs/test-kind.md).

@@ -3,10 +3,6 @@
 The Liqo UI is designed to work on a production-ready cluster, i.e., equipped with an external load balancer and an ingress controller.
 The following guide explains how to **locally** set up a minimal cluster, running on KinD, with the Liqo UI reachable through an ingress controller.
 
-## Setup of the Liqo UI on a KinD cluster
-
-Kind does not come with an ingress controller, so we will use the **NGINX Ingress Controller**.
-
 ### 1. Create a Kind cluster
 
 Create a file named `kind-config.yaml` with the following content:

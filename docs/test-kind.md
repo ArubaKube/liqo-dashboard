@@ -72,13 +72,6 @@ On a local KinD cluster, you need to manually map it to `127.0.0.1` by adding th
 127.0.0.1 liqo-dashboard.local
 ```
 
-### 7. Configure the Liqo UI Helm chart
-
-Uncomment the following line in `deployments/liqo-dashboard/values.yaml` in order to use the Liqo UI through the ingress controller:
-
-```yaml
-# ingressClassName: "nginx"
-```
 
 ### 8. Install the Liqo UI Helm chart
 

@@ -5,25 +5,22 @@ The following guide explains how to **locally** set up a minimal cluster, runnin
 
 ### 1. Create a Kind cluster
 
-Create a file named `kind-config.yaml` with the following content:
+Create a new Kind cluster with `extraPortMappings` to allow the local host to forward the requests to the cluster Ingress controller over ports 80/443:
 
-```yaml
-# kind-config.yaml
+```sh
+cat <<EOF | kind create cluster --name liqo-dashboard --config=-
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
-  - role: control-plane
-    extraPortMappings:
-      - containerPort: 80
-        hostPort: 80
-      - containerPort: 443
-        hostPort: 443
-```
-
-### 2. Create the Kind cluster
-
-```bash
-kind create cluster --name liqo-dashboard --config kind-config.yaml
+- role: control-plane
+  extraPortMappings:
+  - containerPort: 80
+    hostPort: 80
+    protocol: TCP
+  - containerPort: 443
+    hostPort: 443
+    protocol: TCP
+EOF
 ```
 
 ### 3. Deploy the NGINX Ingress Controller

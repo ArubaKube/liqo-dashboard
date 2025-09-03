@@ -7,7 +7,7 @@ The following guide explains how to **locally** set up a minimal cluster, runnin
 
 Kind does not come with an ingress controller, so we will use the **NGINX Ingress Controller**.
 
-### 1. Create the Kind cluster configuration file
+### 1. Create a Kind cluster
 
 Create a file named `kind-config.yaml` with the following content:
 

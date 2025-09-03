@@ -60,7 +60,7 @@ More detailed instructions are available in the [Liqo documentation](https://doc
 
 ### 6. Configure the hostname
 
-Since we are using an ingress controller, the dashboard will be exposed under the hostname `liqo-dashboard.local`.  
+By default, the dashboard will be exposed under the hostname `liqo-dashboard.local`.  
 In a real cluster, this would normally be resolved by your DNS.  
 On a local KinD cluster, you need to manually map it to `127.0.0.1` by adding the following line to your `/etc/hosts` file (or `C:\Windows\System32\drivers\etc\hosts` in Windows):
 

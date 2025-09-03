@@ -36,4 +36,4 @@ You can install this UI via the [provided Helm Chart](./deployments/).
 
 ## Quick start tutorials
 
-- [Setup of the Liqo UI on a KinD cluster](docs/test-kind.md).
+- [Setup of the Liqo UI on a KinD cluster](docs/setup-on-kind.md).

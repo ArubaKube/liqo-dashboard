@@ -68,9 +68,17 @@ On a local KinD cluster, you need to manually map it to `127.0.0.1` by adding th
 
 
 ### 8. Install the Liqo UI Helm chart
+1. Clone this repository:
 
 ```bash
-helm install liqo-dashboard ./deployments/liqo-dashboard -f ./deployments/liqo-dashboard/values.yaml
+git clone https://github.com/ArubaKube/liqo-dashboard.git
+cd liqo-dashboard
+```
+
+2. Install the Liqo dashboard Helm chart:
+
+```bash
+helm install liqo-dashboard -n liqo-dashboard --create-namespace ./deployments/liqo-dashboard
 ```
 
 ### 9. Connect to the Liqo UI

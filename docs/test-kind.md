@@ -1,4 +1,4 @@
-# Testing the Liqo UI on a KinD cluster
+# Setup of the Liqo UI on a KinD cluster
 
 The Liqo UI is designed to work on a production-ready cluster, i.e., equipped with an external load balancer and an ingress controller.
 The following guide explains how to **locally** set up a minimal cluster, running on KinD, with the Liqo UI reachable through an ingress controller.

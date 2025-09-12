@@ -15,9 +15,6 @@
 package handlers
 
 import (
-	"fmt"
-	"log"
-
 	"github.com/gin-gonic/gin"
 	"github.com/liqotech/liqo/pkg/liqoctl/factory"
 	"github.com/liqotech/liqo/pkg/liqoctl/info"
@@ -28,13 +25,12 @@ import (
 func (s Server) GetV1StatusLocalInfo(c *gin.Context) {
 	ctx := c.Request.Context()
 
-	f := factory.NewForLocal()
-	if err := f.Initialize(); err != nil {
-		c.JSON(500, gin.H{"error": fmt.Sprintf("factory init failed: %v", err)})
-		return
+	f := factory.Factory{
+		KubeClient: s.nativeClient,
+		CRClient:   s.oClient,
 	}
 
-	o := info.NewOptions(f)
+	o := info.NewOptions(&f)
 
 	checkers := []info.Checker{
 		&localstatus.InstallationChecker{},
@@ -51,33 +47,9 @@ func (s Server) GetV1StatusLocalInfo(c *gin.Context) {
 		}
 	}
 
-	var err error
-	var output string
-	switch {
-	// If no format is specified, format and print a user-friendly output
-	case o.Format == "" && o.GetQuery == "":
-		for i := range checkers {
-			o.Printer.BoxSetTitle(checkers[i].GetTitle())
-			o.Printer.BoxPrintln(checkers[i].Format(*o))
-		}
-	// If query specified try to retrieve the field from the output
-	case o.GetQuery != "":
-		data := collectDataFromCheckers(checkers)
-		log.Println(data)
-	default:
-		data := collectDataFromCheckers(checkers)
-		log.Println(data)
+	data := collectDataFromCheckers(checkers)
 
-	}
-
-	if err != nil {
-		o.Printer.Error.Println(err)
-	} else {
-		fmt.Println(output)
-	}
-
-	c.JSON(200, gin.H{"status": "checkers eseguiti, vedi console per dettagli"})
-
+	c.JSON(200, data)
 }
 
 func collectDataFromCheckers(checkers []info.Checker) map[string]interface{} {

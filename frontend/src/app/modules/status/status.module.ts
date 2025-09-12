@@ -20,12 +20,13 @@ import { StatusRoutingModule } from './status-routing.module';
 import { StatusComponent } from './pages/status.component';
 import { VariousComponent } from './components/various/various.component';
 import { PeeringListComponent } from './components/peering/peering-list.component';
+import { PeeringTableComponent } from 'src/app/shared/components/peering-table/peering-table.component';
 import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [StatusComponent,
-        VariousComponent,
-        PeeringListComponent
+    VariousComponent,
+    PeeringListComponent,
   ],
   imports: [CommonModule, StatusRoutingModule, SharedModule],
 })

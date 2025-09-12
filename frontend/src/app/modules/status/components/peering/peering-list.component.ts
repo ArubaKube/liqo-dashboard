@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { Component, OnInit, } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 @Component({
   selector: 'app-peering-list',
   templateUrl: './peering-list.component.html',
 })
 export class PeeringListComponent implements OnInit {
-  constructor() { }
-  ngOnInit(): void { }
+  @Input() peerings: Record<string, any>[] | null = []; constructor() { }
+  ngOnInit(): void { console.log(this.peerings)}
 
 }

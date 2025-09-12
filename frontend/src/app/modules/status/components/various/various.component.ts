@@ -29,12 +29,22 @@ import { Component, Input, OnInit } from '@angular/core';
 export class VariousComponent implements OnInit {
   @Input() icon?: string;
   @Input() title!: string;
-  @Input() items: { label: string; value: string }[] = [];
-  constructor() { }
-
+  @Input() items: { label: string; value: string | string[] | Record<string, any> }[] = [];
   ngOnInit(): void { }
 
   get iconPath(): string {
     return `assets/icons/${this.icon}`;
   }
+
+  //Formats array of strings
+  getDisplayValue(value: string | string[] | Record<string, any>): string {
+    if (Array.isArray(value)) {
+      return value.join(', ');
+    } else if (typeof value === 'object' && value !== null) {
+      return Object.entries(value).map(([k, v]) => `${k}: ${v}`).join('\n');
+    }
+    return value ?? '';
+  }
+
 }
+

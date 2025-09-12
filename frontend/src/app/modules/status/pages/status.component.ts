@@ -14,10 +14,28 @@
  * limitations under the License.
  */
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { SpinnerNgxAdapterService } from "../../../core/services/spinner/spinner-ngx-adapter.service";
+import { StatusService } from '../services/status.service';
 
 @Component({
   selector: 'app-status',
   templateUrl: './status.component.html',
 })
-export class StatusComponent {}
+export class StatusComponent implements OnInit {
+  liqoInfo: any;
+  constructor(private statusService: StatusService, private spinnerService: SpinnerNgxAdapterService) { }
+
+  ngOnInit(): void {
+    this.spinnerService.show();
+    this.statusService.getLiqoInfo().subscribe({
+      next: (data) => {
+        this.liqoInfo = data;
+        this.spinnerService.hide();
+      },
+      error: () => {
+        this.spinnerService.hide();
+      }
+    });
+  }
+}

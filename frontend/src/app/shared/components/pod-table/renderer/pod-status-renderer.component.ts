@@ -19,7 +19,6 @@ import { ICellRendererParams } from 'ag-grid-community';
 import {Component} from "@angular/core";
 import {NamespaceService} from "../../../../modules/namespace/services/namespace.service";
 import {ModalService} from "../../../../core/services/modal.service";
-import {data} from "autoprefixer";
 
 @Component({
   selector: 'pod-status-renderer-component',
@@ -36,6 +35,8 @@ export class PodStatusRendererComponent implements ICellRendererAngularComp {
     this.data = params?.data;
   }
 
+  // No logic for refresh is provided.
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   refresh(params: ICellRendererParams) {
     return false;
   }

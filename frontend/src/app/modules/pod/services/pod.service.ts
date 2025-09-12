@@ -36,6 +36,7 @@ export class PodService {
     return this.http
       .get<Pod[]>(this.apiURL + '/pods/', {
         params: {
+          ...params,
         },
         ...this.httpOptions
       })

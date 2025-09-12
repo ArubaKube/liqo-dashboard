@@ -40,6 +40,9 @@ import {
 import {
   NamespaceStatusRendererComponent
 } from "./components/namespace-table/renderer/namespace-status-renderer.component";
+import {
+  NamespaceOffloadingRendererComponent
+} from "./components/namespace-table/renderer/namespace-offloading-renderer.component";
 import { PodTableComponent } from "./components/pod-table/pod-table.component";
 import { PodLabelsRendererComponent } from "./components/pod-table/renderer/pod-labels-renderer.component";
 import { PodStatusRendererComponent } from "./components/pod-table/renderer/pod-status-renderer.component";
@@ -51,6 +54,7 @@ import { PodStatusRendererComponent } from "./components/pod-table/renderer/pod-
     NamespaceTableComponent,
     NamespaceActionsRendererComponent,
     NamespaceStatusRendererComponent,
+    NamespaceOffloadingRendererComponent,
     PodTableComponent,
     PodLabelsRendererComponent,
     PodStatusRendererComponent,
@@ -87,6 +91,7 @@ import { PodStatusRendererComponent } from "./components/pod-table/renderer/pod-
     ClusterActionsRendererComponent,
     NamespaceActionsRendererComponent,
     NamespaceStatusRendererComponent,
+    NamespaceOffloadingRendererComponent,
     PodTableComponent,
     PodLabelsRendererComponent,
     PodStatusRendererComponent,

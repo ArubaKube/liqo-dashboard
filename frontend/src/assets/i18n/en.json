@@ -81,5 +81,31 @@
     "offloadingConfirmQuestion": "Do you want to offload this namespace?",
     "offloadingSuccessText": "The namespace has been successfully offloaded. Updates will be available soon.",
     "unoffloadingSuccessText": "The namespace has been successfully unoffloaded. Updates will be available soon."
+  },
+  "status": {
+    "local": {
+      "localClusterLabel": "Local cluster summary",
+      "clusterIdLabel": "Cluster ID",
+      "versionLabel": "Version",
+      "k8sApiServerLabel": "K8s API Server"
+    },
+    "network": {
+      "networkDetailsLabel": "Network details",
+      "podCIDRLabel": "Pod CIDR",
+      "serviceCIDRLabel": "Service CIDR",
+      "externalCIDRLabel": "External CIDR",
+      "internalCIDRLabel": "Internal CIDR"
+    },
+    "miscellaneous": {
+      "miscellaneousInfoLabel": "Miscellaneous info",
+      "clusterLabelsLabel": "Cluster labels"
+    },
+    "peering":{
+      "clusterIdLabel": "Cluster ID",
+      "roleLabel": "Role",
+      "networkingStatusLabel": "Networking status",
+      "authStatusLabel": "Authentication status",
+      "offloadingStatusLabel": "Offloading status"
+    }
   }
 }

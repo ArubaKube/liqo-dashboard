@@ -16,6 +16,7 @@
 
 import { Component, OnInit, Input } from '@angular/core';
 import { ColDef } from "ag-grid-community";
+import { TranslocoService } from '@jsverse/transloco';
 
 export interface ForeignCluster {
   id: string;
@@ -30,7 +31,7 @@ export interface ForeignCluster {
   templateUrl: './peering-table.component.html',
 })
 export class PeeringTableComponent implements OnInit {
-  @Input() peerings: Record<string, any>[] | null = []; constructor() { }
+  @Input() peerings: Record<string, any>[] | null = []; constructor(private translateService: TranslocoService) { }
   //public peerings: ForeignCluster[] = [];
 
   columnDefs: ColDef[] = [];
@@ -42,7 +43,6 @@ export class PeeringTableComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    console.log(this.peerings)
     /* this.peerings = [
       {
         id: 'cluster-1',
@@ -68,11 +68,11 @@ export class PeeringTableComponent implements OnInit {
     ]; */
 
     this.columnDefs = [
-      { headerName: 'ID', field: 'clusterID' },
-      { headerName: 'Role', field: 'role' },
-      { headerName: 'Networking Status', field: 'networkingStatus' },
-      { headerName: 'Authentication Status', field: 'authenticationStatus' },
-      { headerName: 'Offloading Status', field: 'offloadingStatus' },
+      { headerName: this.translateService.translate('status.peering.clusterIdLabel'), field: 'clusterID' },
+      { headerName: this.translateService.translate('status.peering.roleLabel'), field: 'role' },
+      { headerName: this.translateService.translate('status.peering.networkingStatusLabel'), field: 'networkingStatus' },
+      { headerName: this.translateService.translate('status.peering.authStatusLabel'), field: 'authenticationStatus' },
+      { headerName: this.translateService.translate('status.peering.offloadingStatusLabel'), field: 'offloadingStatus' },
     ];
   }
 

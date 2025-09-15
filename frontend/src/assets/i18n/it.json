@@ -81,5 +81,31 @@
     "offloadingConfirmQuestion": "Vuoi scaricare questo namespace?",
     "offloadingSuccessText": "Il namespace è stato scaricato con successo. Gli aggiornamenti saranno disponibili a breve.",
     "unoffloadingSuccessText": "Il namespace è stato caricato con successo. Gli aggiornamenti saranno disponibili a breve."
+  },
+  "status": {
+    "local": {
+      "localClusterLabel": "Riepilogo cluster locale",
+      "clusterIdLabel": "ID Cluster",
+      "versionLabel": "Versione",
+      "k8sApiServerLabel": "K8s API Server"
+    },
+    "network": {
+      "networkDetailsLabel": "Dettagli rete",
+      "podCIDRLabel": "CIDR Pod",
+      "serviceCIDRLabel": "CIDR Servizio",
+      "externalCIDRLabel": "CIDR Esterno",
+      "internalCIDRLabel": "CIDR Interno"
+    },
+    "miscellaneous": {
+      "miscellaneousInfoLabel": "Varie",
+      "clusterLabelsLabel": "Label cluster"
+    },
+    "peering":{
+      "clusterIdLabel": "ID Cluster",
+      "roleLabel": "Ruolo",
+      "networkingStatusLabel": "Stato rete",
+      "authStatusLabel": "Stato autenticazione",
+      "offloadingStatusLabel": "Stato offloading"
+    }
   }
 }

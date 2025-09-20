@@ -14,6 +14,6 @@ apiURL = this.configService.getConfig().api?.url;
 
 
   getLiqoInfo(){
-    return this.http.get<String>(this.apiURL +'/status/local-info')
+    return this.http.get<string>(this.apiURL +'/status/local-info')
   }
 }

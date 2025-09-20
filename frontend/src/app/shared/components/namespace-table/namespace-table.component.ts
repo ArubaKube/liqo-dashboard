@@ -20,6 +20,7 @@ import { ColDef } from "ag-grid-community";
 import { Namespace } from "../../../modules/namespace/models/namespace";
 import { NamespaceActionsRendererComponent } from "./renderer/namespace-actions-renderer.component";
 import { NamespaceStatusRendererComponent } from "./renderer/namespace-status-renderer.component";
+import { NamespaceOffloadingRendererComponent } from "./renderer/namespace-offloading-renderer.component";
 @Component({
   selector: '[namespace-table]',
   templateUrl: './namespace-table.component.html',
@@ -37,6 +38,7 @@ export class NamespaceTableComponent implements OnInit {
     this.columnDefs = [
       { headerValueGetter: () => this.translateService.translate("namespaces.nameLabel"), field: 'name' },
       { headerValueGetter: () => this.translateService.translate("namespaces.statusLabel"), field: 'status', cellRenderer: NamespaceStatusRendererComponent },
+      { headerValueGetter: () => this.translateService.translate("namespaces.offloadingLabel"), field: 'offloading', cellRenderer: NamespaceOffloadingRendererComponent },
       { cellStyle: { "display": "flex" }, field: '', cellRenderer: NamespaceActionsRendererComponent, sortable: false, filter: false },
     ];
   }

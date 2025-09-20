@@ -75,6 +75,10 @@
 	.btn-small {
 		@apply flex-none p-4 text-xs text-base rounded-md mr-0 font-semibold text-gray-500 hover:bg-gray-200 dark:bg-night-600 dark:text-night-200 dark:hover:bg-night-500
 	}
+
+	.btn-primary {
+		@apply bg-blue-500 hover:bg-blue-600 text-white;
+	}
 }
 
 /** Scroll bar **/

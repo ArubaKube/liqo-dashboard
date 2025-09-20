@@ -18,7 +18,7 @@ You can install this UI via the [provided Helm Chart](./deployments/).
 1. Clone this repository:
 
     ```bash
-    https://github.com/ArubaKube/liqo-dashboard.git
+    git clone https://github.com/ArubaKube/liqo-dashboard.git
     cd liqo-dashboard
     ```
 
@@ -34,6 +34,6 @@ You can install this UI via the [provided Helm Chart](./deployments/).
     helm install my-release ./deployments/liqo-dashboard
     ```
 
-## Quick Test
+## Quick start tutorials
 
-Detailed instructions for quickly testing the Liqo UI on a local KinD cluster are available in [test-kind.md](docs/test-kind.md).
+- [Setup of the Liqo UI on a KinD cluster](docs/setup-on-kind.md).

@@ -36,7 +36,6 @@ export class ClusterListComponent implements OnInit {
 
   // Cluster info variables
   clusters: Cluster[] = [];
-  selectedCluster: Cluster | undefined | null;
 
   // Chart configuration
   localNode = {
@@ -91,14 +90,10 @@ export class ClusterListComponent implements OnInit {
     if (selected) {
       if (this.chartOptions.series) {
         const clusterSelected = (this.chartOptions?.series as any)[0].data[selected?.dataIndex[0]]
-        if (clusterSelected.id == this.localNode.localNodeLabel) {
-          this.selectedCluster = null;
-        } else {
-          this.selectedCluster = clusterSelected;
+        if (clusterSelected.id != LOCAL_CLUSTER_ID) {
+          this.router.navigate(['/clusters', 'detail', clusterSelected.id])
         }
       }
-    } else {
-      this.selectedCluster = null
     }
   }
 

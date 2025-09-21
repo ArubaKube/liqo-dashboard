@@ -20,19 +20,46 @@ import (
 	"github.com/gin-gonic/gin"
 	k8serrors "k8s.io/apimachinery/pkg/api/errors"
 
+	"github.com/ArubaKube/liqo-dashboard/pkg/server/api"
 	"github.com/ArubaKube/liqo-dashboard/pkg/utils/getters"
 )
 
 // GetV1Clusters implements the `GET /v1/clusters` route, returning all the peered clusters.
-func (s Server) GetV1Clusters(c *gin.Context) {
-	foreignClusters, err := getters.GetForeignClusters(c, s.oClient)
-	if err != nil {
-		log.Printf("Error listing ForeignClusters: %v", err)
-		c.JSON(500, gin.H{"error": "Unable to retrieve the list of clusters"})
-		return
+func (s Server) GetV1Clusters(c *gin.Context, params api.GetV1ClustersParams) {
+	clusterType := "Remote" // default value
+	var clusters any
+	var err error
+
+	if params.ClusterType != nil {
+		clusterType = string(*params.ClusterType)
 	}
 
-	c.JSON(200, foreignClusters)
+	switch clusterType {
+
+	case "Remote":
+		clusters, err = getters.GetForeignClusters(c, s.oClient)
+		if err != nil {
+			log.Printf("Error listing ForeignClusters: %v", err)
+			c.JSON(500, gin.H{"error": "Unable to retrieve the list of clusters"})
+			return
+		}
+	case "Local":
+		clusters, err = getters.GetLocalCluster(c, s.nativeClient, s.oClient)
+		if err != nil {
+			log.Printf("Error listing LocalClusters: %v", err)
+			c.JSON(500, gin.H{"error": "Unable to retrieve the list of clusters"})
+			return
+		}
+		/* 	case "All":
+		clusters, err = getters.GetAllClusters(c, s.oClient)
+		if err != nil {
+			log.Printf("Error listing AllClusters: %v", err)
+			c.JSON(500, gin.H{"error": "Unable to retrieve the list of clusters"})
+			return
+		} */
+	}
+
+	c.JSON(200, clusters)
 }
 
 // GetV1ClustersId implements the `GET /v1/clusters/:id` route, returning the cluster with the given clusterID.

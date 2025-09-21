@@ -16,6 +16,7 @@ package getters
 
 import (
 	"context"
+	"fmt"
 
 	authv1beta1 "github.com/liqotech/liqo/apis/authentication/v1beta1"
 	liqov1beta1 "github.com/liqotech/liqo/apis/core/v1beta1"
@@ -27,11 +28,15 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/resource"
+	"k8s.io/client-go/kubernetes"
 	metricsv1beta1 "k8s.io/metrics/pkg/apis/metrics/v1beta1"
 	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/ArubaKube/liqo-dashboard/pkg/server/models"
+	"github.com/liqotech/liqo/pkg/liqoctl/factory"
+	"github.com/liqotech/liqo/pkg/liqoctl/info"
+	"github.com/liqotech/liqo/pkg/liqoctl/info/localstatus"
 )
 
 // GetForeignClusters returns all the ForeignClusters.
@@ -51,6 +56,63 @@ func GetForeignClusters(ctx context.Context, cl client.Client) ([]models.Foreign
 	}
 
 	return foreignClusters, nil
+}
+
+func collectDataFromCheckers(checkers []info.Checker) map[string]interface{} {
+	data := map[string]interface{}{}
+
+	for i := range checkers {
+		data[checkers[i].GetID()] = checkers[i].GetData()
+	}
+
+	return data
+}
+
+func collectLocalData(ctx context.Context, nativeClient kubernetes.Interface, CRClient client.Client) (*localstatus.Installation, error) {
+	f := factory.Factory{
+		KubeClient: nativeClient,
+		CRClient:   CRClient,
+	}
+	o := info.NewOptions(&f)
+
+	checkers := []info.Checker{
+		&localstatus.InstallationChecker{},
+		&localstatus.HealthChecker{},
+		&localstatus.NetworkChecker{},
+		&localstatus.PeeringChecker{},
+	}
+
+	for i := range checkers {
+		checkers[i].Collect(ctx, *o)
+		for _, err := range checkers[i].GetCollectionErrors() {
+			o.Printer.Warning.Println(err)
+		}
+	}
+
+	data := collectDataFromCheckers(checkers)
+	localObj, ok := data["local"].(localstatus.Installation)
+	if !ok {
+		return nil, fmt.Errorf("local data missing or wrong type")
+	}
+
+	return &localObj, nil
+}
+
+// GetLocalClusters returns all the LocalClusters.
+func GetLocalCluster(ctx context.Context, nativeClient kubernetes.Interface, CRClient client.Client) ([]models.ForeignCluster, error) {
+	data, err := collectLocalData(ctx, nativeClient, CRClient)
+	fmt.Println(data)
+	if err != nil {
+		return nil, fmt.Errorf("local data missing or wrong type")
+	}
+
+	var cluster = models.ForeignCluster{
+		ID:           data.ClusterID,
+		Role:         "Consumer",
+		APIServerURL: data.APIServerAddr,
+	}
+
+	return []models.ForeignCluster{cluster}, nil
 }
 
 // GetForeignClusterByID returns the ForeignCluster with the given clusterID.

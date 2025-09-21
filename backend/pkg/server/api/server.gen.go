@@ -18,6 +18,167 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// Defines values for ConditionStatus.
+const (
+	ConditionStatusError        ConditionStatus = "Error"
+	ConditionStatusEstablished  ConditionStatus = "Established"
+	ConditionStatusNone         ConditionStatus = "None"
+	ConditionStatusNotReady     ConditionStatus = "NotReady"
+	ConditionStatusPending      ConditionStatus = "Pending"
+	ConditionStatusReady        ConditionStatus = "Ready"
+	ConditionStatusSomeNotReady ConditionStatus = "SomeNotReady"
+)
+
+// Defines values for ForeignClusterRole.
+const (
+	ForeignClusterRoleConsumer            ForeignClusterRole = "Consumer"
+	ForeignClusterRoleConsumerAndProvider ForeignClusterRole = "ConsumerAndProvider"
+	ForeignClusterRoleProvider            ForeignClusterRole = "Provider"
+	ForeignClusterRoleUnknown             ForeignClusterRole = "Unknown"
+)
+
+// Defines values for NamespaceStatus.
+const (
+	Active      NamespaceStatus = "Active"
+	Terminating NamespaceStatus = "Terminating"
+)
+
+// Defines values for OffloadingNamespaceMappingStrategy.
+const (
+	DefaultName     OffloadingNamespaceMappingStrategy = "DefaultName"
+	EnforceSameName OffloadingNamespaceMappingStrategy = "EnforceSameName"
+	SelectedName    OffloadingNamespaceMappingStrategy = "SelectedName"
+)
+
+// Defines values for OffloadingOffloadingPhase.
+const (
+	OffloadingOffloadingPhaseAllFailed         OffloadingOffloadingPhase = "AllFailed"
+	OffloadingOffloadingPhaseInProgress        OffloadingOffloadingPhase = "InProgress"
+	OffloadingOffloadingPhaseNoClusterSelected OffloadingOffloadingPhase = "NoClusterSelected"
+	OffloadingOffloadingPhaseReady             OffloadingOffloadingPhase = "Ready"
+	OffloadingOffloadingPhaseSomeFailed        OffloadingOffloadingPhase = "SomeFailed"
+	OffloadingOffloadingPhaseTerminating       OffloadingOffloadingPhase = "Terminating"
+)
+
+// Defines values for OffloadingPodOffloadingStrategy.
+const (
+	OffloadingPodOffloadingStrategyLocal          OffloadingPodOffloadingStrategy = "Local"
+	OffloadingPodOffloadingStrategyLocalAndRemote OffloadingPodOffloadingStrategy = "LocalAndRemote"
+	OffloadingPodOffloadingStrategyRemote         OffloadingPodOffloadingStrategy = "Remote"
+)
+
+// Defines values for PodRestartPolicy.
+const (
+	Always    PodRestartPolicy = "Always"
+	Never     PodRestartPolicy = "Never"
+	OnFailure PodRestartPolicy = "OnFailure"
+)
+
+// Defines values for PodStatus.
+const (
+	PodStatusFailed    PodStatus = "Failed"
+	PodStatusPending   PodStatus = "Pending"
+	PodStatusRunning   PodStatus = "Running"
+	PodStatusSucceeded PodStatus = "Succeeded"
+	PodStatusUnknown   PodStatus = "Unknown"
+)
+
+// Defines values for GetV1ClustersParamsClusterType.
+const (
+	GetV1ClustersParamsClusterTypeAll    GetV1ClustersParamsClusterType = "All"
+	GetV1ClustersParamsClusterTypeLocal  GetV1ClustersParamsClusterType = "Local"
+	GetV1ClustersParamsClusterTypeRemote GetV1ClustersParamsClusterType = "Remote"
+)
+
+// ConditionStatus defines model for ConditionStatus.
+type ConditionStatus string
+
+// ForeignCluster defines model for ForeignCluster.
+type ForeignCluster struct {
+	ApiServerStatus      *ConditionStatus    `json:"apiServerStatus,omitempty"`
+	ApiServerUrl         *string             `json:"apiServerUrl,omitempty"`
+	AuthenticationStatus *ConditionStatus    `json:"authenticationStatus,omitempty"`
+	Id                   *string             `json:"id,omitempty"`
+	NetworkLatency       *string             `json:"networkLatency,omitempty"`
+	NetworkStatus        *ConditionStatus    `json:"networkStatus,omitempty"`
+	OffloadingStatus     *ConditionStatus    `json:"offloadingStatus,omitempty"`
+	ResourcesAcquired    *Resources          `json:"resourcesAcquired,omitempty"`
+	ResourcesOffered     *Resources          `json:"resourcesOffered,omitempty"`
+	Role                 *ForeignClusterRole `json:"role,omitempty"`
+}
+
+// ForeignClusterRole defines model for ForeignCluster.Role.
+type ForeignClusterRole string
+
+// Namespace defines model for Namespace.
+type Namespace struct {
+	CreationTime *string          `json:"creationTime,omitempty"`
+	Name         *string          `json:"name,omitempty"`
+	Offloading   *Offloading      `json:"offloading,omitempty"`
+	Status       *NamespaceStatus `json:"status,omitempty"`
+}
+
+// NamespaceStatus defines model for Namespace.Status.
+type NamespaceStatus string
+
+// Node defines model for Node.
+type Node struct {
+	Capacity     *Resources `json:"capacity,omitempty"`
+	CapacityUsed *Resources `json:"capacityUsed,omitempty"`
+	ClusterID    *string    `json:"clusterID,omitempty"`
+	Name         *string    `json:"name,omitempty"`
+}
+
+// Offloading defines model for Offloading.
+type Offloading struct {
+	NamespaceMappingStrategy *OffloadingNamespaceMappingStrategy `json:"namespaceMappingStrategy,omitempty"`
+	OffloadingPhase          *OffloadingOffloadingPhase          `json:"offloadingPhase,omitempty"`
+	PodOffloadingStrategy    *OffloadingPodOffloadingStrategy    `json:"podOffloadingStrategy,omitempty"`
+}
+
+// OffloadingNamespaceMappingStrategy defines model for Offloading.NamespaceMappingStrategy.
+type OffloadingNamespaceMappingStrategy string
+
+// OffloadingOffloadingPhase defines model for Offloading.OffloadingPhase.
+type OffloadingOffloadingPhase string
+
+// OffloadingPodOffloadingStrategy defines model for Offloading.PodOffloadingStrategy.
+type OffloadingPodOffloadingStrategy string
+
+// Pod defines model for Pod.
+type Pod struct {
+	CreationTime  *string            `json:"creationTime,omitempty"`
+	Images        *[]string          `json:"images,omitempty"`
+	Labels        *map[string]string `json:"labels,omitempty"`
+	Name          *string            `json:"name,omitempty"`
+	Namespace     *string            `json:"namespace,omitempty"`
+	NodeName      *string            `json:"nodeName,omitempty"`
+	RestartPolicy *PodRestartPolicy  `json:"restartPolicy,omitempty"`
+	Status        *PodStatus         `json:"status,omitempty"`
+}
+
+// PodRestartPolicy defines model for Pod.RestartPolicy.
+type PodRestartPolicy string
+
+// PodStatus defines model for Pod.Status.
+type PodStatus string
+
+// Resources defines model for Resources.
+type Resources struct {
+	Cpu              *string `json:"cpu,omitempty"`
+	EphemeralStorage *string `json:"ephemeralStorage,omitempty"`
+	Memory           *string `json:"memory,omitempty"`
+	Pods             *string `json:"pods,omitempty"`
+}
+
+// GetV1ClustersParams defines parameters for GetV1Clusters.
+type GetV1ClustersParams struct {
+	ClusterType *GetV1ClustersParamsClusterType `form:"ClusterType,omitempty" json:"ClusterType,omitempty"`
+}
+
+// GetV1ClustersParamsClusterType defines parameters for GetV1Clusters.
+type GetV1ClustersParamsClusterType string
+
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 	// Health check
@@ -25,7 +186,7 @@ type ServerInterface interface {
 	GetHealthz(c *gin.Context)
 	// Get list of clusters
 	// (GET /v1/clusters)
-	GetV1Clusters(c *gin.Context)
+	GetV1Clusters(c *gin.Context, params GetV1ClustersParams)
 	// Get cluster by ID
 	// (GET /v1/clusters/{id})
 	GetV1ClustersId(c *gin.Context, id string)
@@ -41,9 +202,6 @@ type ServerInterface interface {
 	// Get offloaded pods by namespace name
 	// (GET /v1/namespaces/{name}/offloaded)
 	GetV1NamespacesNameOffloaded(c *gin.Context, name string)
-	// Get local cluster info
-	// (GET /v1/status/local-info)
-	GetV1StatusLocalInfo(c *gin.Context)
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -71,6 +229,19 @@ func (siw *ServerInterfaceWrapper) GetHealthz(c *gin.Context) {
 // GetV1Clusters operation middleware
 func (siw *ServerInterfaceWrapper) GetV1Clusters(c *gin.Context) {
 
+	var err error
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetV1ClustersParams
+
+	// ------------- Optional query parameter "ClusterType" -------------
+
+	err = runtime.BindQueryParameter("form", true, false, "ClusterType", c.Request.URL.Query(), &params.ClusterType)
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter ClusterType: %w", err), http.StatusBadRequest)
+		return
+	}
+
 	for _, middleware := range siw.HandlerMiddlewares {
 		middleware(c)
 		if c.IsAborted() {
@@ -78,7 +249,7 @@ func (siw *ServerInterfaceWrapper) GetV1Clusters(c *gin.Context) {
 		}
 	}
 
-	siw.Handler.GetV1Clusters(c)
+	siw.Handler.GetV1Clusters(c, params)
 }
 
 // GetV1ClustersId operation middleware
@@ -190,19 +361,6 @@ func (siw *ServerInterfaceWrapper) GetV1NamespacesNameOffloaded(c *gin.Context) 
 	siw.Handler.GetV1NamespacesNameOffloaded(c, name)
 }
 
-// GetV1StatusLocalInfo operation middleware
-func (siw *ServerInterfaceWrapper) GetV1StatusLocalInfo(c *gin.Context) {
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		middleware(c)
-		if c.IsAborted() {
-			return
-		}
-	}
-
-	siw.Handler.GetV1StatusLocalInfo(c)
-}
-
 // GinServerOptions provides options for the Gin server.
 type GinServerOptions struct {
 	BaseURL      string
@@ -237,32 +395,30 @@ func RegisterHandlersWithOptions(router gin.IRouter, si ServerInterface, options
 	router.GET(options.BaseURL+"/v1/namespaces", wrapper.GetV1Namespaces)
 	router.GET(options.BaseURL+"/v1/namespaces/:name", wrapper.GetV1NamespacesName)
 	router.GET(options.BaseURL+"/v1/namespaces/:name/offloaded", wrapper.GetV1NamespacesNameOffloaded)
-	router.GET(options.BaseURL+"/v1/status/local-info", wrapper.GetV1StatusLocalInfo)
 }
 
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
+	"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",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

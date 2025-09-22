@@ -68,10 +68,10 @@ func collectDataFromCheckers(checkers []info.Checker) map[string]interface{} {
 	return data
 }
 
-func collectLocalClusterData(ctx context.Context, nativeClient kubernetes.Interface, CRClient client.Client) (*models.LocalClusterData, error) {
+func collectLocalClusterData(ctx context.Context, nativeClient kubernetes.Interface, crClient client.Client) (*models.LocalClusterData, error) {
 	f := factory.Factory{
 		KubeClient: nativeClient,
-		CRClient:   CRClient,
+		CRClient:   crClient,
 	}
 	o := info.NewOptions(&f)
 
@@ -90,7 +90,6 @@ func collectLocalClusterData(ctx context.Context, nativeClient kubernetes.Interf
 	}
 
 	data := collectDataFromCheckers(checkers)
-	fmt.Println(data)
 	localObj, ok := data["local"].(localstatus.Installation)
 	if !ok {
 		return nil, fmt.Errorf("local data missing or wrong type")
@@ -109,9 +108,9 @@ func collectLocalClusterData(ctx context.Context, nativeClient kubernetes.Interf
 	return &localClusterData, nil
 }
 
-// GetLocalClusters returns all the LocalClusters.
-func GetLocalCluster(ctx context.Context, nativeClient kubernetes.Interface, CRClient client.Client) ([]models.ForeignCluster, error) {
-	data, err := collectLocalClusterData(ctx, nativeClient, CRClient)
+// GetLocalCluster returns the local cluster information.
+func GetLocalCluster(ctx context.Context, nativeClient kubernetes.Interface, crClient client.Client) ([]models.ForeignCluster, error) {
+	data, err := collectLocalClusterData(ctx, nativeClient, crClient)
 	if err != nil {
 		return nil, fmt.Errorf("local data missing or wrong type")
 	}
@@ -119,8 +118,10 @@ func GetLocalCluster(ctx context.Context, nativeClient kubernetes.Interface, CRC
 	var cluster = models.ForeignCluster{
 		ID:           data.Local.ClusterID,
 		Role:         "Consumer",
+		IsLocal:      true,
 		APIServerURL: data.Local.APIServerAddr,
 		Version:      data.Local.Version,
+		Labels:       data.Local.Labels,
 		NetworkInformation: models.NetworkInformation{
 			PodCIDR:      data.Network.PodCIDR,
 			ServiceCIDR:  data.Network.ServiceCIDR,
@@ -227,6 +228,7 @@ func parseForeignCluster(ctx context.Context, cl client.Client, fc *liqov1beta1.
 	return models.ForeignCluster{
 		ID:                   fc.Spec.ClusterID,
 		Role:                 fc.Status.Role,
+		IsLocal:              false,
 		APIServerURL:         fc.Status.APIServerURL,
 		APIServerStatus:      fcutils.GetAPIServerStatus(fc),
 		NetworkStatus:        getNetworkStatus(fc),

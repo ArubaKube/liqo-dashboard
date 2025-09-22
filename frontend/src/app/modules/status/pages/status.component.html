@@ -1,28 +1,27 @@
 <div class="mx-auto px-4 py-4 sm:px-8 lg:container 
             grid grid-cols-1 justify-items-stretch md:grid-cols-3 gap-6 " *transloco ="let t">
-
   <various-info-box class="lg: mr-8" [title]="t('status.local.localClusterLabel')" [icon]="'outline/home.svg'" [items]="[
-      { label: t('status.local.clusterIdLabel'), value: liqoInfo?.local?.clusterID },
-      { label: t('status.local.versionLabel'), value: liqoInfo?.local?.version },
-      { label: t('status.local.k8sApiServerLabel'), value: liqoInfo?.local?.APIServerAddr },
+      { label: t('status.local.clusterIdLabel'), value: liqoInfo[0]?.id },
+      { label: t('status.local.versionLabel'), value: liqoInfo[0]?.version },
+      { label: t('status.local.k8sApiServerLabel'), value: liqoInfo[0]?.apiServerUrl  },
     ]">
   </various-info-box>
 
   <various-info-box class="lg:ml-4 lg:mr-4" [title]="t('status.network.networkDetailsLabel')" [icon]="'outline/graph-view.svg'" [items]="[
-      { label: t('status.network.podCIDRLabel'), value: liqoInfo?.network?.podCIDR },
-      { label: t('status.network.serviceCIDRLabel'), value: liqoInfo?.network?.serviceCIDR  },
-      { label: t('status.network.externalCIDRLabel'), value: liqoInfo?.network?.externalCIDR  },
-      { label: t('status.network.internalCIDRLabel'), value: liqoInfo?.network?.internalCIDR  }
+      { label: t('status.network.podCIDRLabel'), value: liqoInfo[0]?.networkInformation?.podCidr },
+      { label: t('status.network.serviceCIDRLabel'), value: liqoInfo[0]?.networkInformation?.serviceCidr  },
+      { label: t('status.network.externalCIDRLabel'), value: liqoInfo[0]?.networkInformation?.externalCidr  },
+      { label: t('status.network.internalCIDRLabel'), value: liqoInfo[0]?.networkInformation?.internalCidr  }
     ]">
   </various-info-box>
 
   <various-info-box class="lg:ml-8" [title]="t('status.miscellaneous.miscellaneousInfoLabel')" [icon]="'outline/information-circle.svg'" [items]="[
-      { label: t('status.miscellaneous.clusterLabelsLabel'), value: liqoInfo?.local?.labels ?? {} }
+      { label: t('status.miscellaneous.clusterLabelsLabel'), value: liqoInfo[0]?.labels ?? {} }
 
     ]">
   </various-info-box>
 
 </div>
 
-<app-peering-list class="mt-8" [peerings]="liqoInfo?.peerings?.peers">
+<app-peering-list class="mt-8" [peerings]="liqoInfo?.slice(1)">
 </app-peering-list>

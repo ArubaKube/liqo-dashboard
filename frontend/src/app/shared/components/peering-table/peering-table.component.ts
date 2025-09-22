@@ -68,9 +68,9 @@ export class PeeringTableComponent implements OnInit {
     ]; */
 
     this.columnDefs = [
-      { headerName: this.translateService.translate('status.peering.clusterIdLabel'), field: 'clusterID' },
+      { headerName: this.translateService.translate('status.peering.clusterIdLabel'), field: 'id' },
       { headerName: this.translateService.translate('status.peering.roleLabel'), field: 'role' },
-      { headerName: this.translateService.translate('status.peering.networkingStatusLabel'), field: 'networkingStatus' },
+      { headerName: this.translateService.translate('status.peering.networkingStatusLabel'), field: 'networkStatus' },
       { headerName: this.translateService.translate('status.peering.authStatusLabel'), field: 'authenticationStatus' },
       { headerName: this.translateService.translate('status.peering.offloadingStatusLabel'), field: 'offloadingStatus' },
     ];

@@ -25,3 +25,11 @@ type Resources struct {
 	Pods             resource.Quantity `json:"pods"`
 	EphemeralStorage resource.Quantity `json:"ephemeralStorage"`
 }
+
+// NetworkInformation represents the network information of a cluster.
+type NetworkInformation struct {
+	PodCIDR      string `json:"podCidr"`
+	ServiceCIDR  string `json:"serviceCidr"`
+	ExternalCIDR string `json:"externalCidr"`
+	InternalCIDR string `json:"internalCidr"`
+}

@@ -16,6 +16,7 @@ package models
 
 import (
 	liqov1beta1 "github.com/liqotech/liqo/apis/core/v1beta1"
+	"github.com/liqotech/liqo/pkg/liqoctl/info/localstatus"
 )
 
 // ForeignCluster is a struct that representing a foreign cluster.
@@ -30,4 +31,11 @@ type ForeignCluster struct {
 	NetworkLatency       string                          `json:"networkLatency"`
 	ResourcesOffered     Resources                       `json:"resourcesOffered"`
 	ResourcesAcquired    Resources                       `json:"resourcesAcquired"`
+	NetworkInformation   NetworkInformation              `json:"networkInformation"`
+	Version              string                          `json:"version"`
+}
+
+type LocalClusterData struct {
+	Local   localstatus.Installation `json:"local"`
+	Network localstatus.Network      `json:"network"`
 }

@@ -68,7 +68,7 @@ func collectDataFromCheckers(checkers []info.Checker) map[string]interface{} {
 	return data
 }
 
-func collectLocalData(ctx context.Context, nativeClient kubernetes.Interface, CRClient client.Client) (*localstatus.Installation, error) {
+func collectLocalClusterData(ctx context.Context, nativeClient kubernetes.Interface, CRClient client.Client) (*models.LocalClusterData, error) {
 	f := factory.Factory{
 		KubeClient: nativeClient,
 		CRClient:   CRClient,
@@ -90,26 +90,43 @@ func collectLocalData(ctx context.Context, nativeClient kubernetes.Interface, CR
 	}
 
 	data := collectDataFromCheckers(checkers)
+	fmt.Println(data)
 	localObj, ok := data["local"].(localstatus.Installation)
 	if !ok {
 		return nil, fmt.Errorf("local data missing or wrong type")
 	}
 
-	return &localObj, nil
+	networkObj, ok := data["network"].(localstatus.Network)
+	if !ok {
+		return nil, fmt.Errorf("network data missing or wrong type")
+	}
+
+	localClusterData := models.LocalClusterData{
+		Local:   localObj,
+		Network: networkObj,
+	}
+
+	return &localClusterData, nil
 }
 
 // GetLocalClusters returns all the LocalClusters.
 func GetLocalCluster(ctx context.Context, nativeClient kubernetes.Interface, CRClient client.Client) ([]models.ForeignCluster, error) {
-	data, err := collectLocalData(ctx, nativeClient, CRClient)
-	fmt.Println(data)
+	data, err := collectLocalClusterData(ctx, nativeClient, CRClient)
 	if err != nil {
 		return nil, fmt.Errorf("local data missing or wrong type")
 	}
 
 	var cluster = models.ForeignCluster{
-		ID:           data.ClusterID,
+		ID:           data.Local.ClusterID,
 		Role:         "Consumer",
-		APIServerURL: data.APIServerAddr,
+		APIServerURL: data.Local.APIServerAddr,
+		Version:      data.Local.Version,
+		NetworkInformation: models.NetworkInformation{
+			PodCIDR:      data.Network.PodCIDR,
+			ServiceCIDR:  data.Network.ServiceCIDR,
+			ExternalCIDR: data.Network.ExternalCIDR,
+			InternalCIDR: data.Network.InternalCIDR,
+		},
 	}
 
 	return []models.ForeignCluster{cluster}, nil

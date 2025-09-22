@@ -35,7 +35,6 @@ func (s Server) GetV1Clusters(c *gin.Context, params api.GetV1ClustersParams) {
 	}
 
 	switch clusterType {
-
 	case "Remote":
 		clusters, err = getters.GetForeignClusters(c, s.oClient)
 		if err != nil {

@@ -18,13 +18,6 @@ import (
 	"context"
 	"fmt"
 
-	authv1beta1 "github.com/liqotech/liqo/apis/authentication/v1beta1"
-	liqov1beta1 "github.com/liqotech/liqo/apis/core/v1beta1"
-	offloadingv1beta1 "github.com/liqotech/liqo/apis/offloading/v1beta1"
-	liqoconsts "github.com/liqotech/liqo/pkg/consts"
-	fcutils "github.com/liqotech/liqo/pkg/utils/foreigncluster"
-	liqogetters "github.com/liqotech/liqo/pkg/utils/getters"
-	liqolabels "github.com/liqotech/liqo/pkg/utils/labels"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/resource"
@@ -33,10 +26,18 @@ import (
 	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
-	"github.com/ArubaKube/liqo-dashboard/pkg/server/models"
+	authv1beta1 "github.com/liqotech/liqo/apis/authentication/v1beta1"
+	liqov1beta1 "github.com/liqotech/liqo/apis/core/v1beta1"
+	offloadingv1beta1 "github.com/liqotech/liqo/apis/offloading/v1beta1"
+	liqoconsts "github.com/liqotech/liqo/pkg/consts"
 	"github.com/liqotech/liqo/pkg/liqoctl/factory"
 	"github.com/liqotech/liqo/pkg/liqoctl/info"
 	"github.com/liqotech/liqo/pkg/liqoctl/info/localstatus"
+	fcutils "github.com/liqotech/liqo/pkg/utils/foreigncluster"
+	liqogetters "github.com/liqotech/liqo/pkg/utils/getters"
+	liqolabels "github.com/liqotech/liqo/pkg/utils/labels"
+
+	"github.com/ArubaKube/liqo-dashboard/pkg/server/models"
 )
 
 // GetForeignClusters returns all the ForeignClusters.

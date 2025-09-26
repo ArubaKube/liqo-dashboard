@@ -39,8 +39,13 @@ func main() {
 		log.Fatalf("Error getting client: %v", err)
 	}
 
+	nativeClient, err := utils.GetNativeClient()
+	if err != nil {
+		log.Fatalf("Error getting native client: %v", err)
+	}
+
 	// create a type that satisfies the `api.ServerInterface`, which contains an implementation of every operation from the generated code
-	server := handlers.NewServer(oClient)
+	server := handlers.NewServer(oClient, nativeClient)
 
 	r := gin.Default()
 

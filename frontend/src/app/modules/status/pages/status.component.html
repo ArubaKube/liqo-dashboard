@@ -1,0 +1,26 @@
+<div class="mx-auto px-4 py-4 sm:px-8 lg:container 
+            grid grid-cols-1 justify-items-stretch md:grid-cols-3 gap-6 " *transloco="let t">
+  <various-info-box class="lg: mr-8" [title]="t('status.instance.instanceLabel')" [icon]="'outline/home.svg'" [items]="[
+      { label: t('status.instance.clusterIdLabel'), value: liqoInfo?.local.clusterID },
+      { label: t('status.instance.versionLabel'), value: liqoInfo?.local.version },
+      { label: t('status.instance.healthLabel'), value: liqoInfo?.health.healthy  },
+    ]">
+  </various-info-box>
+  <various-info-box class="lg:ml-4 lg:mr-4" [title]="t('status.info.localClusterLabel')"
+    [icon]="'outline/device.svg'" [items]="[
+      { label: t('status.info.apiServerAddressLabel'), value: liqoInfo?.local.APIServerAddr },
+      { label: t('status.info.clusterLabelsLabel'), value: liqoInfo?.local.labels ?? {}  },
+    ]">
+  </various-info-box>
+
+  <various-info-box class="lg:ml-8" [title]="t('status.network.networkDetailsLabel')"
+    [icon]="'outline/information-circle.svg'" [items]="[
+      { label: t('status.network.podCIDRLabel'), value: liqoInfo?.network.podCIDR },
+      { label: t('status.network.serviceCIDRLabel'), value: liqoInfo?.network.serviceCIDR },
+      { label: t('status.network.externalCIDRLabel'), value: liqoInfo?.network.externalCIDR },
+    ]">
+  </various-info-box>
+
+</div>
+<app-peering-list class="mt-8" [peerings]="liqoInfo?.peerings.peers">
+</app-peering-list>

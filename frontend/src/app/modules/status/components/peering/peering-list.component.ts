@@ -21,6 +21,6 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class PeeringListComponent implements OnInit {
   @Input() peerings: Record<string, any>[] | null = []; constructor() { }
-  ngOnInit(): void { console.log(this.peerings)}
+  ngOnInit(): void {}
 
 }

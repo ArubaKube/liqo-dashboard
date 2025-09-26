@@ -89,29 +89,30 @@
     "unoffloadingSuccessText": "The namespace has been successfully unoffloaded. Updates will be available soon."
   },
   "status": {
-    "local": {
-      "localClusterLabel": "Local cluster summary",
+    "instance": {
+      "instanceLabel": "Liqo instance",
       "clusterIdLabel": "Cluster ID",
       "versionLabel": "Version",
-      "k8sApiServerLabel": "K8s API Server"
+      "healthLabel": "Liqo health"
+    },
+    "info": {
+      "localClusterLabel": "Local cluster",
+      "apiServerAddressLabel": "API server address",
+      "clusterLabelsLabel": "Cluster labels"
     },
     "network": {
       "networkDetailsLabel": "Network details",
       "podCIDRLabel": "Pod CIDR",
       "serviceCIDRLabel": "Service CIDR",
-      "externalCIDRLabel": "External CIDR",
-      "internalCIDRLabel": "Internal CIDR"
+      "externalCIDRLabel": "External CIDR"
     },
-    "miscellaneous": {
-      "miscellaneousInfoLabel": "Miscellaneous info",
-      "clusterLabelsLabel": "Cluster labels"
-    },
-    "peering":{
+    "peering": {
       "clusterIdLabel": "Cluster ID",
       "roleLabel": "Role",
       "networkingStatusLabel": "Networking status",
       "authStatusLabel": "Authentication status",
-      "offloadingStatusLabel": "Offloading status"
+      "offloadingStatusLabel": "Offloading status",
+      "detailsButtonLabel": "More details"
     }
   }
 }

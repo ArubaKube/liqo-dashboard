@@ -28,6 +28,7 @@ import { AngularSvgIconModule } from "angular-svg-icon";
 import { NgxEchartsModule } from "ngx-echarts";
 import { NgxPaginationModule } from "ngx-pagination";
 import { TranslocoRootModule } from "../transloco-root.module";
+import { PeeringInfoRendererComponent } from './components/peering-table/renderer/peering-info.renderer.component';
 import { ClusterStatusBadge } from './components/cluster-status-badge/cluster-status-badge.component';
 import { ClusterTableComponent } from "./components/cluster-table/cluster-table.component";
 import { ClusterActionsRendererComponent } from "./components/cluster-table/renderer/cluster-actions-renderer.component";
@@ -56,6 +57,7 @@ import { PodStatusRendererComponent } from "./components/pod-table/renderer/pod-
     NamespaceActionsRendererComponent,
     NamespaceStatusRendererComponent,
     PeeringTableComponent,
+    PeeringInfoRendererComponent,
     NamespaceOffloadingRendererComponent,
     PodTableComponent,
     PodLabelsRendererComponent,
@@ -91,6 +93,7 @@ import { PodStatusRendererComponent } from "./components/pod-table/renderer/pod-
     ModuleStatusBadge,
     NamespaceTableComponent,
     PeeringTableComponent,
+    PeeringInfoRendererComponent,
     ClusterActionsRendererComponent,
     NamespaceActionsRendererComponent,
     NamespaceStatusRendererComponent,

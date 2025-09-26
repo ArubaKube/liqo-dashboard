@@ -21,7 +21,6 @@ import { StatusComponent } from './pages/status.component';
 import { VariousComponent } from './components/various/various.component';
 import { PeeringListComponent } from './components/peering/peering-list.component';
 import { SharedModule } from '../../shared/shared.module';
-
 @NgModule({
   declarations: [StatusComponent,
     VariousComponent,

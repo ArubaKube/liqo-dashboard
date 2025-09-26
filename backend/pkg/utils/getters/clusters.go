@@ -16,22 +16,17 @@ package getters
 
 import (
 	"context"
-	"fmt"
 
 	authv1beta1 "github.com/liqotech/liqo/apis/authentication/v1beta1"
 	liqov1beta1 "github.com/liqotech/liqo/apis/core/v1beta1"
 	offloadingv1beta1 "github.com/liqotech/liqo/apis/offloading/v1beta1"
 	liqoconsts "github.com/liqotech/liqo/pkg/consts"
-	"github.com/liqotech/liqo/pkg/liqoctl/factory"
-	"github.com/liqotech/liqo/pkg/liqoctl/info"
-	"github.com/liqotech/liqo/pkg/liqoctl/info/localstatus"
 	fcutils "github.com/liqotech/liqo/pkg/utils/foreigncluster"
 	liqogetters "github.com/liqotech/liqo/pkg/utils/getters"
 	liqolabels "github.com/liqotech/liqo/pkg/utils/labels"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/resource"
-	"k8s.io/client-go/kubernetes"
 	metricsv1beta1 "k8s.io/metrics/pkg/apis/metrics/v1beta1"
 	"k8s.io/utils/ptr"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -56,81 +51,6 @@ func GetForeignClusters(ctx context.Context, cl client.Client) ([]models.Foreign
 	}
 
 	return foreignClusters, nil
-}
-
-func collectDataFromCheckers(checkers []info.Checker) map[string]interface{} {
-	data := map[string]interface{}{}
-
-	for i := range checkers {
-		data[checkers[i].GetID()] = checkers[i].GetData()
-	}
-
-	return data
-}
-
-func collectLocalClusterData(ctx context.Context, nativeClient kubernetes.Interface, crClient client.Client) (*models.LocalClusterData, error) {
-	f := factory.Factory{
-		KubeClient: nativeClient,
-		CRClient:   crClient,
-	}
-	o := info.NewOptions(&f)
-
-	checkers := []info.Checker{
-		&localstatus.InstallationChecker{},
-		&localstatus.HealthChecker{},
-		&localstatus.NetworkChecker{},
-		&localstatus.PeeringChecker{},
-	}
-
-	for i := range checkers {
-		checkers[i].Collect(ctx, *o)
-		for _, err := range checkers[i].GetCollectionErrors() {
-			o.Printer.Warning.Println(err)
-		}
-	}
-
-	data := collectDataFromCheckers(checkers)
-	localObj, ok := data["local"].(localstatus.Installation)
-	if !ok {
-		return nil, fmt.Errorf("local data missing or wrong type")
-	}
-
-	networkObj, ok := data["network"].(localstatus.Network)
-	if !ok {
-		return nil, fmt.Errorf("network data missing or wrong type")
-	}
-
-	localClusterData := models.LocalClusterData{
-		Local:   localObj,
-		Network: networkObj,
-	}
-
-	return &localClusterData, nil
-}
-
-// GetLocalCluster returns the local cluster information.
-func GetLocalCluster(ctx context.Context, nativeClient kubernetes.Interface, crClient client.Client) ([]models.ForeignCluster, error) {
-	data, err := collectLocalClusterData(ctx, nativeClient, crClient)
-	if err != nil {
-		return nil, fmt.Errorf("local data missing or wrong type")
-	}
-
-	var cluster = models.ForeignCluster{
-		ID:           data.Local.ClusterID,
-		Role:         "Consumer",
-		IsLocal:      true,
-		APIServerURL: data.Local.APIServerAddr,
-		Version:      data.Local.Version,
-		Labels:       data.Local.Labels,
-		NetworkInformation: models.NetworkInformation{
-			PodCIDR:      data.Network.PodCIDR,
-			ServiceCIDR:  data.Network.ServiceCIDR,
-			ExternalCIDR: data.Network.ExternalCIDR,
-			InternalCIDR: data.Network.InternalCIDR,
-		},
-	}
-
-	return []models.ForeignCluster{cluster}, nil
 }
 
 // GetForeignClusterByID returns the ForeignCluster with the given clusterID.
@@ -228,7 +148,6 @@ func parseForeignCluster(ctx context.Context, cl client.Client, fc *liqov1beta1.
 	return models.ForeignCluster{
 		ID:                   fc.Spec.ClusterID,
 		Role:                 fc.Status.Role,
-		IsLocal:              false,
 		APIServerURL:         fc.Status.APIServerURL,
 		APIServerStatus:      fcutils.GetAPIServerStatus(fc),
 		NetworkStatus:        getNetworkStatus(fc),

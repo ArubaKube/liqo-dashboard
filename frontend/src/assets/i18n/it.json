@@ -89,29 +89,30 @@
     "unoffloadingSuccessText": "Il namespace è stato caricato con successo. Gli aggiornamenti saranno disponibili a breve."
   },
   "status": {
-    "local": {
-      "localClusterLabel": "Riepilogo cluster locale",
+    "instance": {
+      "instanceLabel": "Istanza di Liqo",
       "clusterIdLabel": "ID Cluster",
       "versionLabel": "Versione",
-      "k8sApiServerLabel": "K8s API Server"
+      "healthLabel": "Stato di Liqo"
+    },
+    "info": {
+      "localClusterLabel": "Cluster locale",
+      "apiServerAddressLabel": "Indirizzo API server",
+      "clusterLabelsLabel": "Labels del cluster"
     },
     "network": {
-      "networkDetailsLabel": "Dettagli rete",
+      "networkDetailsLabel": "Dettagli di rete",
       "podCIDRLabel": "CIDR Pod",
       "serviceCIDRLabel": "CIDR Servizio",
-      "externalCIDRLabel": "CIDR Esterno",
-      "internalCIDRLabel": "CIDR Interno"
+      "externalCIDRLabel": "CIDR Esterno"
     },
-    "miscellaneous": {
-      "miscellaneousInfoLabel": "Varie",
-      "clusterLabelsLabel": "Label cluster"
-    },
-    "peering":{
+    "peering": {
       "clusterIdLabel": "ID Cluster",
       "roleLabel": "Ruolo",
       "networkingStatusLabel": "Stato rete",
       "authStatusLabel": "Stato autenticazione",
-      "offloadingStatusLabel": "Stato offloading"
+      "offloadingStatusLabel": "Stato offloading",
+      "detailsButtonLabel": "Più dettagli"
     }
   }
 }

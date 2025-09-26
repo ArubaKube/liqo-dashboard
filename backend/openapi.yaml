@@ -7,31 +7,20 @@ paths:
     get:
       summary: Health check
       responses:
-        "200":
+        '200':
           description: OK
   /v1/clusters:
     get:
       summary: Get list of clusters
-      parameters:
-        - name: ClusterType 
-          in: query
-          required: false
-          schema:
-            type: string
-            enum:
-              - All
-              - Local
-              - Remote
-
       responses:
-        "200":
+        '200':
           description: A list of clusters
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ForeignCluster"
+                  $ref: '#/components/schemas/ForeignCluster'
   /v1/clusters/{id}:
     get:
       summary: Get cluster by ID
@@ -42,12 +31,12 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: A cluster
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ForeignCluster"
+                $ref: '#/components/schemas/ForeignCluster'
   /v1/clusters/{id}/nodes:
     get:
       summary: Get nodes of a cluster by cluster ID
@@ -58,24 +47,24 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: A node
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Node"
+                $ref: '#/components/schemas/Node'
   /v1/namespaces:
     get:
       summary: Get list of namespaces
       responses:
-        "200":
+        '200':
           description: A list of namespaces
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Namespace"
+                  $ref: '#/components/schemas/Namespace'
   /v1/namespaces/{name}:
     get:
       summary: Get namespace by name
@@ -86,12 +75,12 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: A namespace
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Namespace"
+                $ref: '#/components/schemas/Namespace'
   /v1/namespaces/{name}/offloaded:
     get:
       summary: Get offloaded pods by namespace name
@@ -102,14 +91,39 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: A list of offloaded pods
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Pod"
+                  $ref: '#/components/schemas/Pod'
+  /v1/info:
+    get:
+      summary: Get local cluster info
+      responses:
+        '200':
+          description: Local cluster info
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  clusterID:
+                    type: string
+                  clusterName:
+                    type: string
+                  apiServerUrl:
+                    type: string
+                  nodesCount:
+                    type: integer
+                  namespacesCount:
+                    type: integer
+                  podsCount:
+                    type: integer
+                  resources:
+                    $ref: '#/components/schemas/Resources'
 components:
   schemas:
     ForeignCluster:
@@ -127,19 +141,19 @@ components:
         apiServerUrl:
           type: string
         apiServerStatus:
-          $ref: "#/components/schemas/ConditionStatus"
+          $ref: '#/components/schemas/ConditionStatus'
         networkStatus:
-          $ref: "#/components/schemas/ConditionStatus"
+          $ref: '#/components/schemas/ConditionStatus'
         authenticationStatus:
-          $ref: "#/components/schemas/ConditionStatus"
+          $ref: '#/components/schemas/ConditionStatus'
         offloadingStatus:
-          $ref: "#/components/schemas/ConditionStatus"
+          $ref: '#/components/schemas/ConditionStatus'
         networkLatency:
           type: string
         resourcesOffered:
-          $ref: "#/components/schemas/Resources"
+          $ref: '#/components/schemas/Resources'
         resourcesAcquired:
-          $ref: "#/components/schemas/Resources"
+          $ref: '#/components/schemas/Resources'
     Node:
       type: object
       properties:
@@ -148,9 +162,9 @@ components:
         clusterID:
           type: string
         capacity:
-          $ref: "#/components/schemas/Resources"
+          $ref: '#/components/schemas/Resources'
         capacityUsed:
-          $ref: "#/components/schemas/Resources"
+          $ref: '#/components/schemas/Resources'
     Namespace:
       type: object
       properties:
@@ -165,7 +179,7 @@ components:
           type: string
           example: "2021-07-01T00:00:00Z"
         offloading:
-          $ref: "#/components/schemas/Offloading"
+          $ref: '#/components/schemas/Offloading'
     Pod:
       type: object
       properties:

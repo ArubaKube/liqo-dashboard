@@ -21,8 +21,8 @@ import (
 	"github.com/liqotech/liqo/pkg/liqoctl/info/localstatus"
 )
 
-// GetV1StatusLocalInfo implements the `GET /v1/status` route, returning a simple "ok" status to indicate that the server is running.
-func (s Server) GetV1StatusLocalInfo(c *gin.Context) {
+// GetV1Info implements the `GET /v1/info` route, returning a simple "ok" status to indicate that the server is running.
+func (s Server) GetV1Info(c *gin.Context) {
 	ctx := c.Request.Context()
 
 	f := factory.Factory{

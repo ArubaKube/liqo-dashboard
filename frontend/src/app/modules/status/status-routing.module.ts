@@ -14,7 +14,16 @@
  * limitations under the License.
  */
 
-export interface Spinner {
-  show(): Promise<unknown>;
-  hide(): Promise<unknown>;
-}
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { StatusComponent } from './pages/status.component';
+
+const routes: Routes = [
+  { path: '', component: StatusComponent }
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
+})
+export class StatusRoutingModule {}

@@ -28,6 +28,7 @@ import { AngularSvgIconModule } from "angular-svg-icon";
 import { NgxEchartsModule } from "ngx-echarts";
 import { NgxPaginationModule } from "ngx-pagination";
 import { TranslocoRootModule } from "../transloco-root.module";
+import { PeeringInfoRendererComponent } from './components/peering-table/renderer/peering-info.renderer.component';
 import { ClusterStatusBadge } from './components/cluster-status-badge/cluster-status-badge.component';
 import { ClusterTableComponent } from "./components/cluster-table/cluster-table.component";
 import { ClusterActionsRendererComponent } from "./components/cluster-table/renderer/cluster-actions-renderer.component";
@@ -40,6 +41,10 @@ import {
 import {
   NamespaceStatusRendererComponent
 } from "./components/namespace-table/renderer/namespace-status-renderer.component";
+import { PeeringTableComponent } from "./components/peering-table/peering-table.component";
+import {
+  NamespaceOffloadingRendererComponent
+} from "./components/namespace-table/renderer/namespace-offloading-renderer.component";
 import { PodTableComponent } from "./components/pod-table/pod-table.component";
 import { PodLabelsRendererComponent } from "./components/pod-table/renderer/pod-labels-renderer.component";
 import { PodStatusRendererComponent } from "./components/pod-table/renderer/pod-status-renderer.component";
@@ -51,6 +56,9 @@ import { PodStatusRendererComponent } from "./components/pod-table/renderer/pod-
     NamespaceTableComponent,
     NamespaceActionsRendererComponent,
     NamespaceStatusRendererComponent,
+    PeeringTableComponent,
+    PeeringInfoRendererComponent,
+    NamespaceOffloadingRendererComponent,
     PodTableComponent,
     PodLabelsRendererComponent,
     PodStatusRendererComponent,
@@ -84,9 +92,12 @@ import { PodStatusRendererComponent } from "./components/pod-table/renderer/pod-
     ClusterStatusBadge,
     ModuleStatusBadge,
     NamespaceTableComponent,
+    PeeringTableComponent,
+    PeeringInfoRendererComponent,
     ClusterActionsRendererComponent,
     NamespaceActionsRendererComponent,
     NamespaceStatusRendererComponent,
+    NamespaceOffloadingRendererComponent,
     PodTableComponent,
     PodLabelsRendererComponent,
     PodStatusRendererComponent,

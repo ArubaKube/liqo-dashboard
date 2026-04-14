@@ -14,7 +14,13 @@
  * limitations under the License.
  */
 
-export interface Spinner {
-  show(): Promise<unknown>;
-  hide(): Promise<unknown>;
+import { Component, OnInit, Input } from '@angular/core';
+@Component({
+  selector: 'app-peering-list',
+  templateUrl: './peering-list.component.html',
+})
+export class PeeringListComponent implements OnInit {
+  @Input() peerings: Record<string, any>[] | null = []; constructor() { }
+  ngOnInit(): void {}
+
 }

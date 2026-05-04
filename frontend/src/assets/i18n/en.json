@@ -3,7 +3,7 @@
     "requestErrorTitle": "Request Error",
     "requestErrorText": "The service did not respond appropriately.",
     "requestConfirmTitle": "Confirm",
-    "requestConfirmText": "Do you want to continue?",
+    "requestConfirmText": "Would you like to continue?",
     "requestConfirmButton": "Confirm",
     "requestCancelButton": "Cancel",
     "requestSuccessTitle": "Success",
@@ -50,7 +50,7 @@
     },
     "details": {
       "peeringInformationWithCluster": "Peering information with cluster",
-      "resourcesUsageOfVirtualNode": "Resources usage of virtual node",
+      "resourcesUsageOfVirtualNode": "Resource usage of virtual node",
       "virtualNodeCpuUsage": "Virtual node CPU usage",
       "virtualNodeMemoryUsage": "Virtual node memory usage",
       "ramUsage": "RAM usage",

@@ -41,11 +41,26 @@ rules:
   - get
   - list
 - apiGroups:
+  - "apps"
+  resources:
+  - deployments
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - "ipam.liqo.io"
+  resources:
+  - networks
+  verbs:
+  - get
+  - list
+- apiGroups:
   - ""
   resources:
   - namespaces
   - pods
   - nodes
+  - configmaps
   verbs:
   - get
   - list
